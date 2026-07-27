@@ -1,20 +1,41 @@
-#include <WiFi.h>
 #include "wifi_service.h"
 
-void wifi_loop()
-{}
+WifiService wifiService;
 
-void scanWifi()
+void WifiService::init()
+{
+}
+
+void WifiService::update()
+{
+    server_.handleClient();
+
+    if(wifiConnecting_)
+    {
+        if(WiFi.status() == WL_CONNECTED)
+        {
+            wifiConnecting_ = false;
+            wifiConnected_  = true;
+
+            g_data.wifiConnected = true;
+
+            Serial.println("WiFi Connected!");
+            Serial.println(WiFi.localIP());
+        }
+    }
+}
+
+void WifiService::scan()
 {
     Serial.println("scan");
+
     WiFi.mode(WIFI_AP_STA);
+
     delay(100);
-    wifiScanning = true;       // 通知后台：我正在扫描
+
     Serial.println("开始扫描");
 
     int n = WiFi.scanNetworks();
-
-    wifiScanning = false;     // 扫描结束
 
     if(n <= 0)
     {
@@ -23,7 +44,8 @@ void scanWifi()
         return;
     }
 
-    g_data.wifiCount = min(n,10);
+    g_data.wifiCount = min(n, 10);
+
     Serial.printf("发现 %d 个WiFi\n", g_data.wifiCount);
 
     for(int i = 0; i < g_data.wifiCount; i++)
@@ -32,90 +54,112 @@ void scanWifi()
 
         Serial.print(i);
         Serial.print(": ");
+
         Serial.print(g_data.wifiList[i]);
 
         Serial.print(" (");
+
         Serial.print(WiFi.RSSI(i));
+
         Serial.println(" dBm)");
-
     }
-
-    wifiScanning = false;        // 扫描结束
 }
 
-//手机连接esp32热点，为了输入WiFi：id/password
-void startAP()
+void WifiService::startAP()
 {
-    WiFi.mode(WIFI_AP_STA);//wifi设为ap-sta模式，打开热点，可让手机连接热点
+    WiFi.mode(WIFI_AP_STA);
 
-    WiFi.softAP("ESP32_Remoter","12345678");
+    WiFi.softAP("ESP32_Remoter", "12345678");
 
+    Serial.print("AP IP : ");
     Serial.println(WiFi.softAPIP());
 }
 
-WebServer server(80);
-void handleRoot()
+void WifiService::handleRoot()
 {
     String html;
 
-    html += "<html>";
-    html += "<body>";
+    html += "<html><body>";
 
     html += "<h2>ESP32 WiFi Config</h2>";
 
-    html += "<h2>";
-    html += selectedSSID;
-    html += "</h2>";
+    html += "<h3>";
+    html += selectedSSID_;
+    html += "</h3>";
 
     html += "<form action='/save'>";
 
     html += "Password:<br>";
+
     html += "<input name='pwd'><br><br>";
 
     html += "<input type='submit' value='Connect'>";
 
     html += "</form>";
 
-    html += "</body>";
-    html += "</html>";
+    html += "</body></html>";
 
-    server.send(200,"text/html",html);
+    server_.send(200, "text/html", html);
 }
 
-void handleSave()
+void WifiService::handleSave()
 {
-    wifiConnecting = true;
-    wifiConnected = false;
+    wifiConnecting_ = true;
+    wifiConnected_ = false;
 
-    selectedPWD = server.arg("pwd");
+    selectedPWD_ = server_.arg("pwd");
 
     Serial.println("SSID:");
-    Serial.println(selectedSSID);
+    Serial.println(selectedSSID_);
 
     Serial.println("PWD:");
-    Serial.println(selectedPWD);
+    Serial.println(selectedPWD_);
 
-    saveWifiConfig(selectedSSID,selectedPWD);
+    saveWifiConfig(selectedSSID_, selectedPWD_);
 
-    g_data.savedSSID = selectedSSID;
-    g_data.savedPWD = selectedPWD;
-
-
+    g_data.savedSSID = selectedSSID_;
+    g_data.savedPWD  = selectedPWD_;
 
     WiFi.begin(
-        selectedSSID.c_str(),
-        selectedPWD.c_str()
-    );
+        selectedSSID_.c_str(),
+        selectedPWD_.c_str());
 
-    server.send( 200,"text/html","<h1>Connecting...</h1>");
-    
+    server_.send(200, "text/html", "<h1>Connecting...</h1>");
 }
 
-void startWebServer()
+void WifiService::startWebServer()
 {
-    server.on("/", handleRoot);
+    server_.on("/", [this]()
+    {
+        handleRoot();
+    });
 
-    server.on("/save",handleSave);
+    server_.on("/save", [this]()
+    {
+        handleSave();
+    });
 
-    server.begin();
+    server_.begin();
+
+    Serial.println("WebServer Started");
+}
+
+void WifiService::setSelectedSSID(const String& ssid)
+{
+    selectedSSID_ = ssid;
+}
+
+bool WifiService::isConnecting() const
+{
+    return wifiConnecting_;
+}
+
+bool WifiService::isConnected() const
+{
+    return wifiConnected_;
+}
+
+String WifiService::getSelectedSSID() const
+{
+    return selectedSSID_;
 }

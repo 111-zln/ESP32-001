@@ -2,7 +2,7 @@
 
 #include "../drivers/Bme280.h"
 #include "../drivers/Co2.h"
-
+#include "../bsp/data.h"
 class Sensor
 {
 public:
@@ -22,3 +22,4 @@ private:
     Bme280* bme280_;
     Co2* co2_;
 };
+extern Sensor sensorService ;

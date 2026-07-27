@@ -1,40 +1,46 @@
 #include "sensor_service.h"
 
+Sensor sensorService ;
+
 Sensor::Sensor()
     : bme280_(nullptr),
       co2_(nullptr)
 {
 }
 
+
 void Sensor::init(Bme280& bme280, Co2& co2)
 {
     bme280_ = &bme280;
     co2_ = &co2;
+
+    co2_->start();   // 这里只调用一次
 }
 
 void Sensor::update()
 {
-    // 后面统一读取传感器
+    g_data.temp     = bme280_->readtemp();
+    g_data.humidity = bme280_->readhumidity();
+    g_data.pressure = bme280_->readpressure();
+    g_data.co2 = co2_->read();
 }
 
 float Sensor::getTemperature()
 {
-    return bme280_->readtemp();
+    return g_data.temp;
 }
 
 float Sensor::getHumidity()
 {
-    return bme280_->readhumidity();
+    return g_data.humidity;
 }
 
 float Sensor::getPressure()
 {
-    return bme280_->readpressure();
+    return g_data.pressure;
 }
 
 int Sensor::getCo2()
 {
-    co2_ -> start();
-    
-    return co2_->read();
+    return g_data.co2;
 }
