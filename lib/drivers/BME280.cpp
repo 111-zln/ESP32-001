@@ -112,8 +112,8 @@ float Bme280::readhumidity()
     cal_.dig_H1 = ((uint16_t)data1[0]);
     cal_.dig_H2 = ((uint16_t)data2[1]<<8)|data2[0];
     cal_.dig_H3 = ((uint16_t)data3[0]);
-    cal_.dig_H4 =((int16_t)data4[0] << 4) |(data4[1] & 0x0F);
-    cal_.dig_H5 =((int16_t)data5[1] << 4) |(data5[0] >> 4);
+    cal_.dig_H4 = ((int16_t)data4[0] << 4) |(data4[1] & 0x0F);
+    cal_.dig_H5 = ((int16_t)data5[1] << 4) |(data5[0] >> 4);
     cal_.dig_H6 = ((uint8_t)data6[0]);
     
     int32_t v_x1_u32r;

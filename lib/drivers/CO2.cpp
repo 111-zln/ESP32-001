@@ -1,7 +1,7 @@
 #include "CO2.h"
 
 
-bool Co2::init(I2c& i2c)
+bool Co2::init(I2c& i2c) 
 {
     i2c_ = &i2c;
     return true;
