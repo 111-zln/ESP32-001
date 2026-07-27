@@ -10,7 +10,7 @@ class Co2
 
         bool start(); //开启i2c测量
 
-        bool read(int16_t& co2, float& temp, float& humidity);  //读出co2，温度，湿度，返回值表示是否成功读取
+        int read();  //读出co2，温度，湿度，返回值表示是否成功读取
 
     private:
         I2c* i2c_;

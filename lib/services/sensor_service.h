@@ -2,20 +2,21 @@
 
 #include "../drivers/Bme280.h"
 #include "../drivers/Co2.h"
-#include "../drivers/RGB.h"
 
 class Sensor
 {
-    public:
+public:
+    Sensor();
 
-        explicit Sensor();
+    void init(Bme280& bme280, Co2& co2);
 
-        void init(  Bme280 bme280 ,Co2 co2);
-        
+    float getTemperature();
+    float getHumidity();
+    float getCo2();
 
+    void update();
 
-    private:
-        Bme280 bme280_;
-        Co2 co2_;
-        Rgb rgb_;
+private:
+    Bme280* bme280_;
+    Co2* co2_;
 };

@@ -5,6 +5,8 @@
 struct DeviceData
 {
     int temp;
+    int humidity;
+    int pressure;
 
     int battery;
 

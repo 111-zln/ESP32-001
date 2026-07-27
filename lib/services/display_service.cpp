@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <U8g2lib.h>
 #include "../bsp/Pins.hpp"
+#include "../services/sensor_service.h"
 
 // '电池', 16x16px
 const unsigned char epd_bitmap_battery_10 [] PROGMEM = {
@@ -151,6 +152,8 @@ TempPage::TempPage()
 }
 void TempPage::draw()
 {
+   //g_data.temp = ;
+
     u8g2_.clearBuffer();
 
     u8g2_.setFont(u8g2_font_logisoso24_tf);
