@@ -195,6 +195,8 @@ void TempPage::draw()
 
 
 }
+
+/*
 void TempPage::addTemp()
 {
     g_data.temp++;
@@ -217,6 +219,8 @@ bool TempPage::isEditMode()
 {
     return editMode;
 }
+*/
+
 /*void TempPage::handleEvent(Event event)
 {
     if(!editMode)
@@ -254,6 +258,7 @@ void TempPage::onExit()
 {
     Serial.println("Temp Exit");
 }
+
 
 //wifi操作
 void WifiPage::draw()
