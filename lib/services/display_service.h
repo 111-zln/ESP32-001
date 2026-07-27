@@ -3,6 +3,10 @@
 #include "../drivers/LCD.h"
 #include "../bsp/data.h"
 
+
+Sensor& sensor_ ;
+
+
 //页面跳转接口
 class Page
 {

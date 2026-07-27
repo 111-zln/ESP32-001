@@ -4,9 +4,10 @@
 
 struct DeviceData
 {
-    int temp;
-    int humidity;
-    int pressure;
+    float temp;
+    float humidity;
+    float pressure;
+    int   co2 ;
 
     int battery;
 

@@ -27,7 +27,12 @@ float Sensor::getHumidity()
     return bme280_->readhumidity();
 }
 
-float Sensor::getCo2()
+float Sensor::getPressure()
+{
+    return bme280_->readpressure();
+}
+
+int Sensor::getCo2()
 {
     co2_ -> start();
     

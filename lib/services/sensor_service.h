@@ -12,7 +12,9 @@ public:
 
     float getTemperature();
     float getHumidity();
-    float getCo2();
+    float getPressure();
+    int getCo2();
+
 
     void update();
 
