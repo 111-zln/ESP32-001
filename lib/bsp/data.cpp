@@ -3,57 +3,41 @@
 
 DeviceData g_data;
 
-int key_num =0 ;
-
-bool wifiScanning = false;
-
-bool needRefresh = true;
-
-bool displaySleep = false;
-
-bool wifiNeedScan = true;
-
-unsigned long lastOperateTime = 0;
-
-
-String selectedSSID = "";
-String selectedPWD = "";
-
-int wifi_maxnum = 5 ;
-bool wifiConnecting = false;
-bool wifiConnected = false;
-String ipAddress = "";
-
 Preferences prefs;
 
-void loadConfig()//开机读取配置
+//---------------- 配置读取 ----------------
+
+void loadConfig()
 {
-    prefs.begin("config", true);//打开名为 config 的存储区，只能读
+    prefs.begin("config", true);
 
-    g_data.temp =prefs.getInt("temp", 25); //找 temp,如果找到,返回保存值;如果没找到,返回25
+    g_data.temp = prefs.getFloat("temp", 25.0f);
 
-    g_data.savedSSID = prefs.getString("ssid","");
-    g_data.savedPWD  = prefs.getString("pwd","");
+    g_data.savedSSID = prefs.getString("ssid", "");
+    g_data.savedPWD  = prefs.getString("pwd", "");
 
     prefs.end();
 }
 
-void saveTemp(int temp)
-{
-    prefs.begin("config", false);//打开存储区，可读可写
+//---------------- 保存温度 ----------------
 
-    prefs.putInt("temp", temp);//存入修改后的当前温度
+void saveTemp(float temp)
+{
+    prefs.begin("config", false);
+
+    prefs.putFloat("temp", temp);
 
     prefs.end();
 }
 
-void saveWifiConfig(String ssid,String pwd)
+//---------------- 保存WiFi ----------------
+
+void saveWifiConfig(String ssid, String pwd)
 {
-    prefs.begin("config",false);
+    prefs.begin("config", false);
 
-    prefs.putString("ssid",ssid);
-
-    prefs.putString("pwd",pwd);
+    prefs.putString("ssid", ssid);
+    prefs.putString("pwd", pwd);
 
     prefs.end();
 }

@@ -39,20 +39,14 @@ const unsigned char* epd_bitmap_allArray[6] = {
 };
 const int epd_bitmap_allArray_LEN = 5;
 
-#define MENU_COUNT 4
-
-Page* currentPage = nullptr;
-Page* nextPage = nullptr;
-
 MainMenuPage mainmenuPage;
 BatteryPage  batteryPage ; 
 TempPage     tempPage;
 WifiPage     wifiPage;
 SwitchPage   switchPage ;
-//State currentState = MAIN_MENU;
 
 
-//主菜单操作
+//主菜单
 void MainMenuPage ::draw()
 {
   u8g2_.clearBuffer();
@@ -68,58 +62,14 @@ void MainMenuPage ::draw()
   u8g2_.drawXBM(64,0,16,16,epd_bitmap_toggle_switch_off_outline );
 
 
-  u8g2_.drawStr((20*key_num)+4,20,"^"); //生成光标
+  u8g2_.drawStr((20*g_data.menuIndex)+4,20,"^"); //生成光标
 
   u8g2_.sendBuffer();
 
 }
-/*
-const State menuTable[] =
-{
-    WIFI_PAGE,
-    BLUETOOTH_PAGE,
-    TEMP_PAGE,
-    BATTERY_PAGE,
-    SWITCH_ON,
-    SWITCH_OFF
-};*/
-/*void MainMenuPage ::handleEvent(Event event)
-{
-    if(event.type == EVENT_SHORT_PRESS)
-    {
-      key_num = (key_num + 1) % MENU_COUNT;
-      needRefresh = true;
-    }
-
-    if(event.type == EVENT_LONG_PRESS)
-    {
-        currentState = menuTable[key_num];
-                
-        switch(currentState)
-        {
-            case WIFI_PAGE:
-            requestPage(&wifiPage);
-            break;
-
-            case BLUETOOTH_PAGE:
-            requestPage(&bluetoothPage);
-            break;
-
-            case TEMP_PAGE:
-            requestPage(&tempPage);
-            break;
-
-            case BATTERY_PAGE:
-            requestPage(&batteryPage);
-            break;
-                    
-        }
-      }	
-}
-*/
 
 
-//电量页面操作
+//电量页面
 void BatteryPage ::draw()
 {
     u8g2_.clearBuffer();
@@ -134,29 +84,18 @@ void BatteryPage ::draw()
 
     u8g2_.sendBuffer();
 }
-/*void BatteryPage ::handleEvent(Event event)
-{
-    if(event.type == EVENT_LONG_PRESS)
-    {
-        setCurrentPage(&mainmenuPage);
-    }
-}*/
 
 
-//temp操作
+//temp
 TempPage::TempPage()
 {
     editMode = false;
 
     Serial.println("TempPage Create");
 }
+
 void TempPage::draw()
 {
-    g_data.temp     = sensor_.getTemperature(); //单位DegC
-    g_data.humidity = sensor_.getHumidity();    //%RH
-    g_data.pressure = sensor_.getPressure();    // Pa
-    g_data.co2 = sensor_.getCo2();              //ppm
-
 
     u8g2_.clearBuffer();
 
@@ -196,170 +135,69 @@ void TempPage::draw()
 
 }
 
-/*
-void TempPage::addTemp()
-{
-    g_data.temp++;
-
-    saveTemp(g_data.temp);
-
-    needRefresh = true;
-  
-}
-void TempPage::enterEdit()
-{
-    editMode = true;
-    
-}
-void TempPage::exitEdit()
-{
-    editMode = false;
-}
-bool TempPage::isEditMode()
-{
-    return editMode;
-}
-*/
-
-/*void TempPage::handleEvent(Event event)
-{
-    if(!editMode)
-    {
-        if(event.type==EVENT_SHORT_PRESS)
-        {
-            enterEdit();
-        }
-
-        else if(event.type==EVENT_LONG_PRESS)
-        {
-
-            setCurrentPage(&mainmenuPage);
-            needRefresh = true;
-        }
-    }
-    else
-    {
-        if(event.type==EVENT_SHORT_PRESS)
-        {
-            addTemp();
-        }
-
-        else if(event.type==EVENT_LONG_PRESS)
-        {
-            exitEdit();
-        }
-    }
-}*/
 void TempPage::onEnter()
 {
     Serial.println("Temp Enter");
 }
+
 void TempPage::onExit()
 {
     Serial.println("Temp Exit");
 }
 
 
-//wifi操作
+//wifi
 void WifiPage::draw()
 {
     u8g2_.clearBuffer();
     u8g2_.setFont(u8g2_font_5x8_tf);
 
-    // 浏览状态
-    if(!wifiConnecting && !wifiConnected)
+
+    switch(g_data.wifiState)
     {
-        for(int i=0;i<min(g_data.wifiCount,wifi_maxnum);i++)
-        {
-            int y = 4+i*10;
+    case WIFI_LIST:
+        drawWifiList();
+        break;
 
-            if(i==selectIndex)
-            {
-                u8g2_.drawStr(4,y,">");
-            }
+    case WIFI_CONNECTING:
+        drawConnecting();
+        break;
 
-            u8g2_.drawStr(10,y,g_data.wifiList[i].c_str());
-        }
-    }
-
-    // 连接中
-    else if(wifiConnecting)
-    {
-        u8g2_.drawStr(20,20,"Connecting...");
-        u8g2_.drawStr(20,35,selectedSSID.c_str());
-        u8g2_.drawStr(10,55,"Long Press Back");
-    }
-
-    // 已连接
-    else if(wifiConnected)
-    {
-        u8g2_.drawStr(20,20,"Connected");
-        u8g2_.drawStr(20,35,selectedSSID.c_str());
-        u8g2_.drawStr(10,55,"Long Press Back");
+    case WIFI_CONNECTED:
+        drawConnected();
+        break;
     }
 
     u8g2_.sendBuffer();
     
 }
-/*void WifiPage::handleEvent(Event event)
+
+void WifiPage::drawWifiList()
 {
-    if(event.type == EVENT_SHORT_PRESS)
+    constexpr int MAX_SHOW = 5;
+
+    for(int i = 0; i < min(g_data.wifiCount, MAX_SHOW); i++)
     {
-        selectIndex++;
+        int y = 4 + i * 10;
 
-        if(selectIndex>=min(g_data.wifiCount,wifi_maxnum))
-        {
-            selectIndex=0;
-        }
+        if(i == g_data.wifiSelectIndex)
+            u8g2_.drawStr(4, y, ">");
 
-        needRefresh=true;
-    }
-    if(event.type == EVENT_LONG_PRESS)
-    {
-        //浏览列表 ->开始连接
-         if(!wifiConnecting && !wifiConnected)
-        {
-            needRefresh = true;
-            wifiConnecting = true;
-            wifiConnected = false;
-
-            selectedSSID = g_data.wifiList[selectIndex];
-
-            Serial.println("选择:");
-            Serial.println(selectedSSID);
-
-            Serial.println("请连接热点");
-            Serial.println("ESP32_Remoter");
-            Serial.println("打开192.168.4.1");
-        }
-
-        // 正在连接 → 返回主菜单
-        else if(wifiConnecting)
-        {
-            wifiConnecting = false;
-            setCurrentPage(&mainmenuPage);
-        }
-
-        // 已连接成功 → 返回主菜单
-        else if(wifiConnected)
-        {
-            setCurrentPage(&mainmenuPage);
-        }
-
+        u8g2_.drawStr(10, y, g_data.wifiList[i].c_str());
     }
 }
 
-void WifiPage::onEnter()
+void WifiPage::drawConnecting()
 {
-    scanWifi();
-    
-    needRefresh=true;
+    u8g2_.drawStr(20,20,"Connecting...");
+    u8g2_.drawStr(20,35,g_data.savedSSID.c_str());
 }
 
-void WifiPage::onExit() 
+void WifiPage::drawConnected()
 {
-    wifiNeedScan = true;
-}*/
+    u8g2_.drawStr(20,20,"Connected");
+    u8g2_.drawStr(20,35,g_data.savedSSID.c_str());
+}
 
 
 //开关操作
@@ -373,35 +211,4 @@ void SwitchPage::draw()
     u8g2_.drawStr(4,40,"Long Press Back");
 
     u8g2_.sendBuffer();
-}
-/*void SwitchPage::handleEvent(Event event)
-{
-    if(event.type == EVENT_LONG_PRESS)
-    {
-
-        setCurrentPage(&mainmenuPage);
-    }
-}*/
-
-
-//页面切换
-void setCurrentPage(Page* page)
-{
-    if(currentPage)
-    {
-        currentPage->onExit();
-    }
-
-    currentPage = page;
-
-    if(currentPage)
-    {
-        currentPage->onEnter();
-    }
-
-     needRefresh = true;   // ← 加这里
-}
-void requestPage(Page* page)
-{
-    nextPage = page;
 }

@@ -4,111 +4,72 @@
 #include "../bsp/data.h"
 
 
-Sensor& sensor_ ;
 
-
-//页面跳转接口
+// 页面基类
 class Page
 {
-    public:
-        virtual void onEnter(){}
+public:
+    virtual ~Page() = default;
 
-        virtual void onExit(){}
-        
-        virtual void draw() = 0;
+    virtual void onEnter() {}
+    virtual void onExit() {}
 
-        virtual void enter(){}
-
-        virtual void exit(){}
-
-        //virtual void handleEvent(Event event){}
+    virtual void draw() = 0;
 };
-extern Page* currentPage;
-extern Page* nextPage;
 
-void requestPage(Page* page);
-void setCurrentPage(Page* page);
-
-
-//主菜单
-class MainMenuPage :public Page
+// 主菜单
+class MainMenuPage : public Page
 {
-    public:
-
-        void draw() override ;
-        //void handleEvent(Event event) override ;
+public:
+    void draw() override;
 };
 extern MainMenuPage mainmenuPage;
 
-
-//电量
+// Battery
 class BatteryPage : public Page
 {
-    public:
-
-        void draw() override;
-        //void handleEvent(Event event) override ;
+public:
+    void draw() override;
 };
 extern BatteryPage batteryPage;
 
 
-//temp
+// Sensor
 class TempPage : public Page
 {
-    private:
+public:
+    TempPage();
 
-        bool editMode ;
-        
+    void onEnter() override;
+    void onExit() override;
 
-    public:
+    void draw() override;
 
-        TempPage();
-
-        void onEnter() override;
-
-        void onExit() override;
-
-        void draw() override;//我是在重写 Page 里面的 draw()
-
-        void enterEdit();
-
-        void exitEdit();
-
-        bool isEditMode();
-
-        void addTemp();    
-
-        //void handleEvent(Event event) override ;
-
+private:
+    bool editMode = false;
 };
 extern TempPage tempPage;
 
-
-//wifi
+// Wifi
 class WifiPage : public Page
 {
-    private:
-        int selectIndex = 0;
-        
-    public:
+public:
+    void draw() override;
+    void drawWifiList();
+    void drawConnecting();
+    void drawConnected();
 
-        void draw() override;
 
-        //void handleEvent(Event event) override ;
-        
-        void onEnter() override;
- 
-        void onExit() override;
+private:
+    int selectIndex = 0;
 };
 extern WifiPage wifiPage;
 
 
-//switch
+// Air Switch
 class SwitchPage : public Page
 {
-    public:
-
-        void draw() override;
-        //void handleEvent(Event event) override ;
+public:
+    void draw() override;
 };
-extern SwitchPage  switchPage ;
+extern SwitchPage switchPage;
