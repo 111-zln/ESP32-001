@@ -34,7 +34,7 @@ Board::Board():
     uart_ucb(Serial1,Pin::Ucb_Tx ,Pin::Ucb_Rx ,115200),
 
     //drivers
-    rgb_(Pin::LED_R, Pin::LED_G, Pin::LED_B),
+    rgb_(Pin::LED_1, Pin::LED_2, Pin::LED_3),
     button_(Pin::SW3),
     lcd_()
 {

@@ -12,7 +12,7 @@ namespace Pin
     // LCD
     constexpr gpio_num_t LCD_CS  = GPIO_NUM_5;
     constexpr gpio_num_t LCD_DC  = GPIO_NUM_4;
-    constexpr gpio_num_t LCD_RST = GPIO_NUM_19;
+    constexpr gpio_num_t LCD_RST = GPIO_NUM_25;
 
     // I2C
     constexpr gpio_num_t I2C_SDA = GPIO_NUM_21;
@@ -25,16 +25,16 @@ namespace Pin
     constexpr gpio_num_t Ucb_Rx  = GPIO_NUM_10;
 
     // RGB LED
-    constexpr gpio_num_t LED_R = GPIO_NUM_8;
-    constexpr gpio_num_t LED_G = GPIO_NUM_7;
-    constexpr gpio_num_t LED_B = GPIO_NUM_6;
+    constexpr gpio_num_t LED_1 = GPIO_NUM_8;
+    constexpr gpio_num_t LED_2 = GPIO_NUM_7;
+    constexpr gpio_num_t LED_3 = GPIO_NUM_6;
 
     // 按键
     constexpr gpio_num_t SW3 = GPIO_NUM_33;
     constexpr gpio_num_t SW5 = GPIO_NUM_25;
 
     constexpr gpio_num_t SW4_LEFT  = GPIO_NUM_36;
-    constexpr gpio_num_t SW4_RIGHT = GPIO_NUM_39;
+    constexpr gpio_num_t SW4_RIGHT = GPIO_NUM_2;
     constexpr gpio_num_t SW4_UP    = GPIO_NUM_34;
     constexpr gpio_num_t SW4_DOWN  = GPIO_NUM_35;
     constexpr gpio_num_t SW4_ENTER = GPIO_NUM_32;
