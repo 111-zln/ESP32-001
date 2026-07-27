@@ -11,5 +11,4 @@ void mqtt_connect();
 
 void mqtt_loop();
 
-
 void publishStatus();//心跳上报

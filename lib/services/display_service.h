@@ -25,6 +25,7 @@ extern Page* nextPage;
 void requestPage(Page* page);
 void setCurrentPage(Page* page);
 
+
 //主菜单
 class MainMenuPage :public Page
 {
@@ -35,6 +36,7 @@ class MainMenuPage :public Page
 };
 extern MainMenuPage mainmenuPage;
 
+
 //电量
 class BatteryPage : public Page
 {
@@ -44,6 +46,7 @@ class BatteryPage : public Page
         //void handleEvent(Event event) override ;
 };
 extern BatteryPage batteryPage;
+
 
 //temp
 class TempPage : public Page
@@ -76,6 +79,7 @@ class TempPage : public Page
 };
 extern TempPage tempPage;
 
+
 //wifi
 class WifiPage : public Page
 {
@@ -93,6 +97,7 @@ class WifiPage : public Page
         void onExit() override;
 };
 extern WifiPage wifiPage;
+
 
 //switch
 class SwitchPage : public Page

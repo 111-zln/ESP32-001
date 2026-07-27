@@ -30,7 +30,7 @@ const unsigned char epd_bitmap_toggle_switch_off_outline [] PROGMEM = {
 };
 
 const unsigned char* epd_bitmap_allArray[6] = {
-	epd_bitmap_battery_10,
+	epd_bitmap_battery_10, //后面要换成风扇（风速）
 	epd_bitmap_temperature_celsius,
 	epd_bitmap_wifi,
     epd_bitmap_toggle_switch, //空调开启
@@ -45,9 +45,9 @@ Page* nextPage = nullptr;
 
 MainMenuPage mainmenuPage;
 BatteryPage  batteryPage ; 
-TempPage tempPage;
-WifiPage wifiPage;
-SwitchPage  switchPage ;
+TempPage     tempPage;
+WifiPage     wifiPage;
+SwitchPage   switchPage ;
 //State currentState = MAIN_MENU;
 
 

@@ -43,7 +43,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length)
     {
         requestPage(&wifiPage);
     }
-    else if(strcmp(page, "bluetooth") == 0)
+    else if(strcmp(page, "switch") == 0)
     {
         requestPage(&switchPage);
     }
