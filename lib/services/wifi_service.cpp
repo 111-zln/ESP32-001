@@ -7,13 +7,9 @@ void wifi_loop()
 void scanWifi()
 {
     Serial.println("scan");
-
     WiFi.mode(WIFI_AP_STA);
-
     delay(100);
-
-    wifiScanning = true;          // 通知后台：我正在扫描
-
+    wifiScanning = true;       // 通知后台：我正在扫描
     Serial.println("开始扫描");
 
     int n = WiFi.scanNetworks();
@@ -23,16 +19,11 @@ void scanWifi()
     if(n <= 0)
     {
         Serial.println("没有发现WiFi");
-
         g_data.wifiCount = 0;
-
-
-
         return;
     }
 
     g_data.wifiCount = min(n,10);
-
     Serial.printf("发现 %d 个WiFi\n", g_data.wifiCount);
 
     for(int i = 0; i < g_data.wifiCount; i++)
@@ -41,14 +32,12 @@ void scanWifi()
 
         Serial.print(i);
         Serial.print(": ");
-
         Serial.print(g_data.wifiList[i]);
 
         Serial.print(" (");
-
         Serial.print(WiFi.RSSI(i));
-
         Serial.println(" dBm)");
+
     }
 
     wifiScanning = false;        // 扫描结束
