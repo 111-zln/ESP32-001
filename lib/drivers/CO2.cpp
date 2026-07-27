@@ -38,5 +38,5 @@ int Co2::read()
     temp = -45 + 175 * ((float)rawT / 65535.0f); 
     humidity = 100 * ((float)rawH / 65535.0f);*/
 
-    return co2;
+    return co2; //ppm
 }

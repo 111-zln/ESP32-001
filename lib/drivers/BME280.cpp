@@ -199,6 +199,6 @@ float Bme280::readpressure()
     p = ((p + var1 + var2) >> 8) +
         (((int64_t)cal_.dig_P7) << 4);
 
-    // Pa
-    return p / 256.0f;
+    
+    return p / 256.0f;   // Pa
 }

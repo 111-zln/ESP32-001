@@ -152,21 +152,37 @@ TempPage::TempPage()
 }
 void TempPage::draw()
 {
-    g_data.temp     = sensor_.getTemperature();
-    g_data.humidity = sensor_.getHumidity();
-    g_data.pressure = sensor_.getPressure();
-    g_data.co2 = sensor_.getCo2();
+    g_data.temp     = sensor_.getTemperature(); //单位DegC
+    g_data.humidity = sensor_.getHumidity();    //%RH
+    g_data.pressure = sensor_.getPressure();    // Pa
+    g_data.co2 = sensor_.getCo2();              //ppm
 
 
     u8g2_.clearBuffer();
 
-    u8g2_.setFont(u8g2_font_logisoso24_tf);
+    u8g2_.setFont(u8g2_font_6x12_tf);
 
-    u8g2_.setCursor(20,15);
-
+    u8g2_.setCursor(4, 12);
+    u8g2_.print("Temp: ");
     u8g2_.print(g_data.temp);
+    u8g2_.print(" C");
 
-    u8g2_.drawStr(70,15,"C");
+    u8g2_.setCursor(4,26);
+    u8g2_.print("Humi: ");
+    u8g2_.print(g_data.humidity);
+    u8g2_.print(" %");
+
+    u8g2_.setCursor(4,40);
+    u8g2_.print("Pres: ");
+    u8g2_.print(g_data.pressure);
+    u8g2_.print(" Pa");
+
+    u8g2_.setCursor(4,54);
+    u8g2_.print("CO2 : ");
+    u8g2_.print(g_data.co2);
+    u8g2_.print(" ppm");
+
+   
 
     if(editMode)
     {
