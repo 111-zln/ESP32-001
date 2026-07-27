@@ -19,6 +19,9 @@ public:
     // Web配置
     void startWebServer();
 
+    // 连接指定WiFi
+    bool connect(int index);
+
     // 当前选择的SSID
     void setSelectedSSID(const String& ssid);
 
@@ -27,6 +30,13 @@ public:
     bool isConnected() const;
 
     String getSelectedSSID() const;
+
+    String getApIP() const;
+
+    String apIP_;
+
+    String AP_ID = "ESP32_Remoter" ;
+    String AP_PWD = "12345678" ;
 
 private:
     void handleRoot();

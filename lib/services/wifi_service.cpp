@@ -69,10 +69,11 @@ void WifiService::startAP()
 {
     WiFi.mode(WIFI_AP_STA);
 
-    WiFi.softAP("ESP32_Remoter", "12345678");
+    WiFi.softAP(AP_ID, AP_PWD);
 
-    Serial.print("AP IP : ");
-    Serial.println(WiFi.softAPIP());
+    apIP_ = WiFi.softAPIP().toString();
+
+    Serial.println(apIP_);
 }
 
 void WifiService::handleRoot()
@@ -162,4 +163,23 @@ bool WifiService::isConnected() const
 String WifiService::getSelectedSSID() const
 {
     return selectedSSID_;
+}
+
+bool WifiService::connect(int index)
+{
+    if(index < 0 || index >= g_data.wifiCount)
+        return false;
+
+    selectedSSID_ = g_data.wifiList[index];
+
+    startAP();
+
+    startWebServer();
+
+    return true;
+}
+
+String WifiService::getApIP() const
+{
+    return apIP_;
 }

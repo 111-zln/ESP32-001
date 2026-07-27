@@ -10,7 +10,7 @@ Button::Button(gpio_num_t pin): gpio_(pin)
 
 bool Button::isPressed() const
 {
-       if(gpio_.read() == 0)
+    if(gpio_.read() == 0)
     {
         delay(10);
 

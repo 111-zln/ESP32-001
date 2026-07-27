@@ -5,6 +5,7 @@ DeviceData g_data;
 
 Preferences prefs;
 
+
 //---------------- 配置读取 ----------------
 
 void loadConfig()

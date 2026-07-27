@@ -3,6 +3,7 @@
 #include <U8g2lib.h>
 #include "../bsp/Pins.hpp"
 #include "../services/sensor_service.h"
+#include "../services/wifi_service.h"
 
 // '电池', 16x16px
 const unsigned char epd_bitmap_battery_10 [] PROGMEM = {
@@ -184,13 +185,25 @@ void WifiPage::drawWifiList()
             u8g2_.drawStr(4, y, ">");
 
         u8g2_.drawStr(10, y, g_data.wifiList[i].c_str());
+
     }
 }
 
 void WifiPage::drawConnecting()
 {
-    u8g2_.drawStr(20,20,"Connecting...");
-    u8g2_.drawStr(20,35,g_data.savedSSID.c_str());
+    u8g2_.drawStr(4, 8,  "AP:");
+    String AP_id = wifiService.AP_ID;
+    u8g2_.drawStr(4, 18,AP_id.c_str());
+
+    u8g2_.drawStr(4, 30, "PWD:");
+    String AP_pwd = wifiService.AP_PWD;
+    u8g2_.drawStr(4, 40, AP_pwd.c_str());
+
+    u8g2_.drawStr(4, 52, "OPEN Web:");
+    String ip = wifiService.getApIP();
+    u8g2_.drawStr(34, 52, ip.c_str());
+
+    u8g2_.drawStr(4, 62, "WiFi PWD->");
 }
 
 void WifiPage::drawConnected()
