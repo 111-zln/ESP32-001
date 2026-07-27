@@ -1,5 +1,7 @@
 #include "app.h"
 
+constexpr uint8_t MENU_COUNT = 4;
+
 void App::init()
 {
     currentPage_ = &mainmenuPage;
@@ -38,7 +40,10 @@ void App::update()
         handleBatteryPage();
     }
 
-    currentPage_->draw();
+      if(currentPage_)
+    {
+        currentPage_->draw();
+    }
 }
 
 void App::handleMainMenu()
@@ -47,7 +52,7 @@ void App::handleMainMenu()
     {
         g_data.menuIndex++;
 
-        if(g_data.menuIndex > 3)
+        if(g_data.menuIndex > MENU_COUNT)
             g_data.menuIndex = 0;
     }
 
@@ -145,5 +150,8 @@ void App::handleAirPage()
 
 void App::switch_Page(Page* page)
 {
-    currentPage_ = page;
+    if(page != nullptr)
+    {
+        currentPage_ = page;
+    }
 }
