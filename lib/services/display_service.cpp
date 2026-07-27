@@ -152,10 +152,9 @@ TempPage::TempPage()
 }
 void TempPage::draw()
 {
-    g_data.temp = sensor_.getTemperature();
+    g_data.temp     = sensor_.getTemperature();
     g_data.humidity = sensor_.getHumidity();
     g_data.pressure = sensor_.getPressure();
-
     g_data.co2 = sensor_.getCo2();
 
 
