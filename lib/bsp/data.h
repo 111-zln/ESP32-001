@@ -12,6 +12,11 @@ struct DeviceData
     float pressure = 0.0f;
     int   co2 = 0;
 
+    bool airPower = true;
+    int targetTemp = 24;
+    uint8_t fanSpeed = 1;      // 0=LOW 1=MID 2=HIGH 3=AUTO
+    uint8_t airSelect = 0;     // 0~2
+
     // UI
     int menuIndex = 0;
     int battery = 100;

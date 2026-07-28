@@ -52,7 +52,7 @@ void App::handleMainMenu()
     {
         g_data.menuIndex++;
 
-        if(g_data.menuIndex > MENU_COUNT)
+        if(g_data.menuIndex >= MENU_COUNT)
             g_data.menuIndex = 0;
     }
 
@@ -96,12 +96,18 @@ void App::handleWifiPage()
 {
     if(up_.isPressed())
     {
-        g_data.wifiSelectIndex--;
+        if(g_data.wifiSelectIndex > 0)
+        {
+            g_data.wifiSelectIndex--;
+        }
     }
 
     if(down_.isPressed())
     {
-        g_data.wifiSelectIndex++;
+        if(g_data.wifiSelectIndex < g_data.wifiCount - 1)
+        {
+            g_data.wifiSelectIndex++;
+        }
     }
 
     if(ok_.isPressed())
@@ -117,29 +123,56 @@ void App::handleWifiPage()
 
 void App::handleAirPage()
 {
-    if(left_.isPressed())
-    {
-        // 温度--
-    }
-
-    if(right_.isPressed())
-    {
-        // 温度++
-    }
-
     if(up_.isPressed())
     {
-        // 风速+
+        if(g_data.airSelect > 0)
+            g_data.airSelect--;
     }
 
     if(down_.isPressed())
     {
-        // 风速-
+        if(g_data.airSelect < 2)
+            g_data.airSelect++;
+    }
+
+    if(left_.isPressed())
+    {
+        switch(g_data.airSelect)
+        {
+        case 1:     // Temp
+            if(g_data.targetTemp > 16)
+                g_data.targetTemp--;
+            break;
+
+        case 2:     // Fan
+            if(g_data.fanSpeed > 0)
+                g_data.fanSpeed--;
+            break;
+        }
+    }
+
+    if(right_.isPressed())
+    {
+        switch(g_data.airSelect)
+        {
+        case 1:
+            if(g_data.targetTemp < 30)
+                g_data.targetTemp++;
+            break;
+
+        case 2:
+            if(g_data.fanSpeed < 3)
+                g_data.fanSpeed++;
+            break;
+        }
     }
 
     if(ok_.isPressed())
     {
-        // 开关空调
+        if(g_data.airSelect == 0)
+        {
+            g_data.airPower = !g_data.airPower;
+        }
     }
 
     if(key1_.isPressed())

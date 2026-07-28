@@ -217,11 +217,55 @@ void WifiPage::drawConnected()
 void SwitchPage::draw()
 {
     u8g2_.clearBuffer();
+    u8g2_.setFont(u8g2_font_5x8_tf);
 
-    u8g2_.setFont(u8g2_font_wqy12_t_chinese2);
-    u8g2_.drawStr(4,0,"switch");
-    u8g2_.drawStr(4,20,"ON");
-    u8g2_.drawStr(4,40,"Long Press Back");
+    char buf[24];
+
+    // 标题
+    u8g2_.drawStr(28, 8, "AIR CONTROL");
+    u8g2_.drawHLine(0, 11, 128);
+
+    // 光标
+    switch (g_data.airSelect)
+    {
+    case 0:
+        u8g2_.drawStr(0, 24, ">");
+        break;
+    case 1:
+        u8g2_.drawStr(0, 36, ">");
+        break;
+    case 2:
+        u8g2_.drawStr(0, 48, ">");
+        break;
+    }
+
+    // Power
+    sprintf(buf, " Power : %s",
+            g_data.airPower ? "ON" : "OFF");
+    u8g2_.drawStr(4, 24, buf);
+
+    // Temp
+    sprintf(buf, " Temp  : %d C",
+            g_data.targetTemp);
+    u8g2_.drawStr(4, 36, buf);
+
+    // Fan
+    const char *fanStr[] =
+    {
+        "LOW",
+        "MID",
+        "HIGH",
+        "AUTO"
+    };
+
+    sprintf(buf, " Fan   : %s",
+            fanStr[g_data.fanSpeed]);
+
+    u8g2_.drawStr(4, 48, buf);
+
+    // 底部提示
+    u8g2_.drawHLine(0, 54, 128);
+    u8g2_.drawStr(4, 62, "KEY1:Back");
 
     u8g2_.sendBuffer();
 }
