@@ -4,10 +4,16 @@
 #include "../services/sensor_service.h"
 #include "../services/wifi_service.h"
 #include "../drivers/Button.h"
+#include "../bsp/Pins.hpp"
+#include "../bsp/Board.h"
 
 class App
 {
 public:
+     App(Board& board)
+        : board_(board)
+    {}
+
     void init();
     void update();
 
@@ -15,15 +21,7 @@ private:
     // 当前页面
     Page* currentPage_;
 
-    // 七个按键（根据你的实际GPIO修改）
-    Button up_;
-    Button down_;
-    Button left_;
-    Button right_;
-    Button ok_;
-
-    Button key1_;
-    Button key2_;
+    Board& board_;
 
     // 每个页面自己的业务
     void handleMainMenu();

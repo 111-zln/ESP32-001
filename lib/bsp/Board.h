@@ -21,8 +21,15 @@ class Board
         void init();
         
         Rgb& rgb()       { return rgb_; }//将这个类里面的原对象开放给外部，引用&则是为了避免复制 + 直接操作同一个对象
-        Button& button() { return button_; }
         Sensor& sensor() { return sensor_; }
+
+        Button up_;
+        Button down_;
+        Button left_;
+        Button right_;
+        Button ok_;
+        Button key1_;
+        Button key2_;
 
     private:
     
@@ -35,9 +42,10 @@ class Board
         // Drivers
         Rgb rgb_;
         Lcd lcd_;
-        Button button_;
         Bme280 bme_;
         Co2 co2_;
+
+
 
         // Services
         Sensor sensor_;

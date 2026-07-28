@@ -2,6 +2,7 @@
 
 constexpr uint8_t MENU_COUNT = 4;
 
+
 void App::init()
 {
     currentPage_ = &mainmenuPage;
@@ -48,7 +49,7 @@ void App::update()
 
 void App::handleMainMenu()
 {
-    if(right_.isPressed())
+    if(board_.right_.isPressed())
     {
         g_data.menuIndex++;
 
@@ -56,12 +57,12 @@ void App::handleMainMenu()
             g_data.menuIndex = 0;
     }
 
-    if(left_.isPressed())
+    if(board_.left_.isPressed())
     {
         
     }
 
-    if(ok_.isPressed())
+    if(board_.ok_.isPressed())
     {
         switch(g_data.menuIndex)
         {
@@ -86,7 +87,7 @@ void App::handleMainMenu()
 
 void App::handleSensorPage()
 {
-    if(key1_.isPressed())
+    if(board_.key1_.isPressed())
     {
         switch_Page(&mainmenuPage);
     }
@@ -94,7 +95,7 @@ void App::handleSensorPage()
 
 void App::handleWifiPage()
 {
-    if(up_.isPressed())
+    if(board_.up_.isPressed())
     {
         if(g_data.wifiSelectIndex > 0)
         {
@@ -102,7 +103,7 @@ void App::handleWifiPage()
         }
     }
 
-    if(down_.isPressed())
+    if(board_.down_.isPressed())
     {
         if(g_data.wifiSelectIndex < g_data.wifiCount - 1)
         {
@@ -110,12 +111,12 @@ void App::handleWifiPage()
         }
     }
 
-    if(ok_.isPressed())
+    if(board_.ok_.isPressed())
     {
         wifiService.startConfig(g_data.wifiSelectIndex);
     }
 
-    if(key1_.isPressed())
+    if(board_.key1_.isPressed())
     {
         switch_Page(&mainmenuPage);
     }
@@ -123,19 +124,19 @@ void App::handleWifiPage()
 
 void App::handleAirPage()
 {
-    if(up_.isPressed())
+    if(board_.up_.isPressed())
     {
         if(g_data.airSelect > 0)
             g_data.airSelect--;
     }
 
-    if(down_.isPressed())
+    if(board_.down_.isPressed())
     {
         if(g_data.airSelect < 2)
             g_data.airSelect++;
     }
 
-    if(left_.isPressed())
+    if(board_.left_.isPressed())
     {
         switch(g_data.airSelect)
         {
@@ -151,7 +152,7 @@ void App::handleAirPage()
         }
     }
 
-    if(right_.isPressed())
+    if(board_.right_.isPressed())
     {
         switch(g_data.airSelect)
         {
@@ -167,7 +168,7 @@ void App::handleAirPage()
         }
     }
 
-    if(ok_.isPressed())
+    if(board_.ok_.isPressed())
     {
         if(g_data.airSelect == 0)
         {
@@ -175,7 +176,7 @@ void App::handleAirPage()
         }
     }
 
-    if(key1_.isPressed())
+    if(board_.key1_.isPressed())
     {
         switch_Page(&mainmenuPage);
     }

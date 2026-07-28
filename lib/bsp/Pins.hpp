@@ -37,6 +37,6 @@ namespace Pin
     constexpr gpio_num_t SW4_RIGHT = GPIO_NUM_2;
     constexpr gpio_num_t SW4_UP    = GPIO_NUM_34;
     constexpr gpio_num_t SW4_DOWN  = GPIO_NUM_35;
-    constexpr gpio_num_t SW4_ENTER = GPIO_NUM_32;
+    constexpr gpio_num_t SW4_OK = GPIO_NUM_32;
     
 }

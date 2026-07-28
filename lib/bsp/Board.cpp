@@ -13,7 +13,15 @@ void Board::init()
     // 2. 初始化驱动
     rgb_.off();
     lcd_.init();   // 重点：共享 SPI
-    button_.init();
+
+    up_.init();
+    down_.init();
+    left_.init();
+    right_.init();
+    ok_.init();
+    key1_.init();
+    key2_.init();
+
     bme_.init(i2c_);
     co2_.init(i2c_);
 
@@ -34,8 +42,15 @@ Board::Board():
     uart_ucb(Serial1,Pin::Ucb_Tx ,Pin::Ucb_Rx ,115200),
 
     //drivers
+    up_(Pin::SW4_UP),
+    down_(Pin::SW4_DOWN),
+    left_(Pin::SW4_LEFT),
+    right_(Pin::SW4_RIGHT),
+    ok_(Pin::SW4_OK),
+    key1_(Pin::SW3),
+    key2_(Pin::SW5),
+
     rgb_(Pin::LED_1, Pin::LED_2, Pin::LED_3),
-    button_(Pin::SW3),
     lcd_()
 {
 }
