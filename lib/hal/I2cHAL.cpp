@@ -11,6 +11,7 @@ void I2c::init()
     Wire.begin(sda_, scl_);
 }
 
+
 bool I2c::write(uint8_t addr,uint8_t reg,const uint8_t* data,size_t len)
 {
     Wire.beginTransmission(addr); //准备和地址xxx通信
@@ -20,6 +21,7 @@ bool I2c::write(uint8_t addr,uint8_t reg,const uint8_t* data,size_t len)
 
     return Wire.endTransmission() == 0; //把刚才的数据真正发出去  0-成功   ！0-失败 
 }
+
 
 bool I2c::read(uint8_t addr,uint8_t reg,uint8_t* data,size_t len)
 {
