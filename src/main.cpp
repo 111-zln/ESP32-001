@@ -10,9 +10,9 @@ void setup()
 
 void loop()
 {
-    board.rgb().red();
+    board.rgb_.red();
     delay(500);
 
-    board.rgb().off();
+    board.rgb_.off();
     delay(500);
 }

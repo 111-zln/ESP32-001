@@ -33,3 +33,4 @@ private:
     // 页面切换
     void switch_Page(Page* page);
 };
+extern App app_ ;
