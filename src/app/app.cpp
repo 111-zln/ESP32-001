@@ -10,11 +10,6 @@ void App::init()
 
 void App::update()
 {
-   
-    // 更新后台功能
-    sensorService.update();
-    wifiService.update();
-
     // 当前页面处理按键
     if(currentPage_ == &mainmenuPage)
     {
