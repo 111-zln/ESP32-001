@@ -1,7 +1,5 @@
 #include "tasks.h"
-
 #include "app.h"
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 

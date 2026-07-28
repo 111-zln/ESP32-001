@@ -20,7 +20,7 @@ class Board
         Board();
         void init();
         
-        
+
         // HAL
         Spi spi_;
         I2c i2c_;
@@ -46,3 +46,4 @@ class Board
         // Services
         Sensor sensor_;
 };
+extern Board board_;

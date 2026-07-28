@@ -1,18 +1,19 @@
 #include <Arduino.h>
-#include "Board.h"
-
-Board board;
+#include "../bsp/Board.h"
+#include "../src/app/tasks.h"
+#include "../src/app/app.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 void setup()
 {
-    board.init();
+    board_.init();
+
+    app_.init();
+
+    createTasks();
 }
 
 void loop()
 {
-    board.rgb_.red();
-    delay(500);
-
-    board.rgb_.off();
-    delay(500);
 }

@@ -1,3 +1,5 @@
 #pragma once
 
-void createUITask();
+void createTasks();
+
+void uiTask(void *pv);
