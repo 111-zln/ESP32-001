@@ -3,17 +3,18 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include "data.h"
+#include "freertos/queue.h"
 
 enum class WifiCommand
 {
     Scan,
-    StartConfig,
+    StartConfig
 };
 
 struct WifiMessage
 {
-    WifiCommand cmd;
-     int index;
+    WifiCommand command;
+     int index = -1;
 };
 
 class WifiService
@@ -34,6 +35,7 @@ public:
 
     // 连接指定WiFi
     bool startConfig(int index);
+    bool requestStartConfig(int index);
 
     // 当前选择的SSID
     void setSelectedSSID(const String& ssid);

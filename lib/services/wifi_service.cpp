@@ -19,10 +19,14 @@ void WifiService::update()
 
     while(xQueueReceive(queue_, &msg, 0) == pdTRUE)
     {
-        switch(msg.cmd)
+        switch(msg.command)
         {
-        case WifiCmd::Scan:
+        case WifiCommand::Scan:
             scan();
+            break;
+
+        case WifiCommand::StartConfig:
+            startConfig(msg.index);
             break;
         }
     }
@@ -90,7 +94,7 @@ bool WifiService::requestScan()
 {
     WifiMessage msg;
 
-    msg.cmd = WifiCmd::Scan;
+    msg.command = WifiCommand::Scan;
 
     return xQueueSend(queue_, &msg, 0) == pdPASS;
 }
@@ -214,6 +218,16 @@ bool WifiService::startConfig(int index)
 
 
     return true;
+}
+
+bool WifiService::requestStartConfig(int index)
+{
+    WifiMessage msg;
+
+    msg.command = WifiCommand::StartConfig;
+    msg.index = index;
+
+    return xQueueSend(queue_, &msg, 0) == pdPASS;
 }
 
 String WifiService::getApIP() const
