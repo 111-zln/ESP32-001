@@ -1,7 +1,7 @@
 #include "app.h"
 
 constexpr uint8_t MENU_COUNT = 4;
-
+App app_;
 
 void App::init()
 {

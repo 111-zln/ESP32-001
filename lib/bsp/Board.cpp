@@ -1,6 +1,7 @@
 #include "../bsp/Board.h"
 #include "../bsp/Pins.hpp"
 
+Board board_;
 
 void Board::init()
 {
