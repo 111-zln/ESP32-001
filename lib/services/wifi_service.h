@@ -4,6 +4,18 @@
 #include <WebServer.h>
 #include "data.h"
 
+enum class WifiCommand
+{
+    Scan,
+    StartConfig,
+};
+
+struct WifiMessage
+{
+    WifiCommand cmd;
+     int index;
+};
+
 class WifiService
 {
 public:
@@ -12,6 +24,7 @@ public:
 
     // WiFi扫描
     void scan();
+    bool requestScan();
 
     // 开热点
     void startAP();
@@ -29,8 +42,8 @@ public:
     bool isConnecting() const;
     bool isConnected() const;
 
+    //
     String getSelectedSSID() const;
-
     String getApIP() const;
 
     String apIP_;
@@ -50,6 +63,8 @@ private:
 
     String selectedSSID_;
     String selectedPWD_;
+
+    QueueHandle_t queue_;
 };
 
 extern WifiService wifiService;

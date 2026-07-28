@@ -8,10 +8,25 @@ void WifiService::init()
 
     wifiConnecting_ = false;
     wifiConnected_ = false;
+
+    queue_ = xQueueCreate(5, sizeof(WifiMessage));
+
 }
 
 void WifiService::update()
 {
+    WifiMessage msg;
+
+    while(xQueueReceive(queue_, &msg, 0) == pdTRUE)
+    {
+        switch(msg.cmd)
+        {
+        case WifiCmd::Scan:
+            scan();
+            break;
+        }
+    }
+
     server_.handleClient();
 
     if(wifiConnecting_)
@@ -69,6 +84,15 @@ void WifiService::scan()
     }
 
     WiFi.scanDelete();
+}
+
+bool WifiService::requestScan()
+{
+    WifiMessage msg;
+
+    msg.cmd = WifiCmd::Scan;
+
+    return xQueueSend(queue_, &msg, 0) == pdPASS;
 }
 
 void WifiService::startAP()
@@ -186,6 +210,8 @@ bool WifiService::startConfig(int index)
     startAP();
 
     startWebServer();
+
+
 
     return true;
 }

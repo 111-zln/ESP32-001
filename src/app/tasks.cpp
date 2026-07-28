@@ -3,7 +3,10 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-static void uiTask(void *pv);
+
+static TaskHandle_t uiTaskHandle     = nullptr;
+static TaskHandle_t sensorTaskHandle = nullptr;
+static TaskHandle_t wifiTaskHandle   = nullptr;
 
 void createTasks()
 {
@@ -14,7 +17,7 @@ void createTasks()
         4096,           // 栈大小
         nullptr,        // 参数
         2,              // 优先级
-        nullptr,        // TaskHandle
+        &uiTaskHandle,  // TaskHandle
         1               // Core1
     );
 
@@ -25,7 +28,7 @@ void createTasks()
         4096,
         nullptr,
         1,
-        nullptr,
+        &sensorTaskHandle,
         0
     );
 
@@ -36,7 +39,7 @@ void createTasks()
         4096,
         nullptr,
         3,
-        nullptr,
+        &wifiTaskHandle,
         0
     );
     
