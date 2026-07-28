@@ -1,4 +1,4 @@
-#include "../hal/UartHAL.h"
+#include "UartHAL.h"
 
 Uart::Uart(HardwareSerial& serial,int tx,int rx,uint32_t baud)
     : serial_(serial),

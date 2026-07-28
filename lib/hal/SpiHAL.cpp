@@ -1,4 +1,4 @@
-#include "../hal/SpiHAL.h"
+#include "SpiHAL.h"
 
 Spi::Spi(int sck,int miso, int mosi)
     : sck_(sck),miso_(miso),mosi_(mosi)

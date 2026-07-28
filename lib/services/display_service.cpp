@@ -1,9 +1,9 @@
 #include "display_service.h"
 #include <Arduino.h>
 #include <U8g2lib.h>
-#include "../bsp/Pins.hpp"
-#include "../services/sensor_service.h"
-#include "../services/wifi_service.h"
+#include "Pins.hpp"
+#include "sensor_service.h"
+#include "wifi_service.h"
 
 // '电池', 16x16px
 const unsigned char epd_bitmap_battery_10 [] PROGMEM = {

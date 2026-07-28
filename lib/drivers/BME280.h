@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../hal/I2cHAL.h"
+#include "I2cHAL.h"
 
 struct Calibration
 {

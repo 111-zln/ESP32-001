@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../services/display_service.h"
-#include "../services/sensor_service.h"
-#include "../services/wifi_service.h"
-#include "../drivers/Button.h"
-#include "../bsp/Pins.hpp"
-#include "../bsp/Board.h"
+#include "display_service.h"
+#include "sensor_service.h"
+#include "wifi_service.h"
+#include "Button.h"
+#include "Pins.hpp"
+#include "Board.h"
 
 class App
 {

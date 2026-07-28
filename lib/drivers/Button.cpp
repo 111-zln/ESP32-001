@@ -1,5 +1,5 @@
 #include "Button.h"
-#include<Arduino.h>
+#include <Arduino.h>
 
 Button::Button(gpio_num_t pin): gpio_(pin)
 {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../drivers/LCD.h"
-#include "../bsp/data.h"
+#include "LCD.h"
+#include "data.h"
 
 
 

@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "../hal/Gpio.h"
+#include "Gpio.h"
 #include "driver/gpio.h"
 
 class Rgb

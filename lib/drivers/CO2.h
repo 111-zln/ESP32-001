@@ -1,6 +1,6 @@
 #pragma once
 #include "Arduino.h"
-#include "../hal/I2cHAL.h"
+#include "I2cHAL.h"
 #include <cstdint> //提供固定长度的整数类型。
 
 class Co2

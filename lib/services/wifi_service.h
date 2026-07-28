@@ -2,7 +2,7 @@
 
 #include <WiFi.h>
 #include <WebServer.h>
-#include "../bsp/data.h"
+#include "data.h"
 
 class WifiService
 {

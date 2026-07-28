@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "driver/gpio.h"
-#include "../hal/GPIO.h"
+#include "Gpio.h"
 
 class Button
 {

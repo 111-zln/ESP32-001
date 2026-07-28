@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../drivers/Bme280.h"
-#include "../drivers/Co2.h"
-#include "../bsp/data.h"
+#include "Bme280.h"
+#include "Co2.h"
+#include "data.h"
 class Sensor
 {
 public:

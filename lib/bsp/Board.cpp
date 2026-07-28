@@ -1,5 +1,5 @@
-#include "../bsp/Board.h"
-#include "../bsp/Pins.hpp"
+#include "Board.h"
+#include "Pins.hpp"
 
 Board board_;
 

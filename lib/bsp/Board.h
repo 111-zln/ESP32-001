@@ -1,18 +1,18 @@
 #pragma once
 
-#include "../hal/Gpio.h"
-#include "../hal/SpiHAL.h"
-#include "../hal/I2cHAL.h"
-#include "../hal/UartHAL.h"
+#include "Gpio.h"
+#include "SpiHAL.h"
+#include "I2cHAL.h"
+#include "UartHAL.h"
 
-#include "../drivers/RGB.h"
-#include "../drivers/LCD.h"
-#include "../drivers/Button.h"
-#include "../drivers/Bme280.h"
-#include "../drivers/CO2.h"
+#include "RGB.h"
+#include "LCD.h"
+#include "Button.h"
+#include "Bme280.h"
+#include "CO2.h"
 
-#include "../services/display_service.h"
-#include "../services/sensor_service.h"
+#include "display_service.h"
+#include "sensor_service.h"
 
 class Board
 {

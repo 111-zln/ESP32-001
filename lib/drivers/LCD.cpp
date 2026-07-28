@@ -1,5 +1,5 @@
 #include "Lcd.h"
-#include "../bsp/Pins.hpp"
+#include "Pins.hpp"
 
 U8G2_ST7567_ENH_DG128064_F_4W_HW_SPI u8g2_(U8G2_R0,Pin::LCD_CS,Pin::LCD_DC,Pin::LCD_RST);
 
