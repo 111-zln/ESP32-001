@@ -4,6 +4,10 @@ WifiService wifiService;
 
 void WifiService::init()
 {
+    WiFi.mode(WIFI_AP_STA);
+
+    wifiConnecting_ = false;
+    wifiConnected_ = false;
 }
 
 void WifiService::update()
@@ -63,6 +67,8 @@ void WifiService::scan()
 
         Serial.println(" dBm)");
     }
+
+    WiFi.scanDelete();
 }
 
 void WifiService::startAP()
@@ -130,6 +136,9 @@ void WifiService::handleSave()
 
 void WifiService::startWebServer()
 {
+    if(serverStarted_)
+        return;
+
     server_.on("/", [this]()
     {
         handleRoot();
@@ -143,6 +152,8 @@ void WifiService::startWebServer()
     server_.begin();
 
     Serial.println("WebServer Started");
+
+    serverStarted_=true;
 }
 
 void WifiService::setSelectedSSID(const String& ssid)
@@ -165,7 +176,7 @@ String WifiService::getSelectedSSID() const
     return selectedSSID_;
 }
 
-bool WifiService::connect(int index)
+bool WifiService::startConfig(int index)
 {
     if(index < 0 || index >= g_data.wifiCount)
         return false;

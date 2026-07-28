@@ -20,7 +20,7 @@ public:
     void startWebServer();
 
     // 连接指定WiFi
-    bool connect(int index);
+    bool startConfig(int index);
 
     // 当前选择的SSID
     void setSelectedSSID(const String& ssid);
@@ -46,6 +46,7 @@ private:
 
     bool wifiConnecting_ = false;
     bool wifiConnected_ = false;
+    bool serverStarted_ = false;
 
     String selectedSSID_;
     String selectedPWD_;

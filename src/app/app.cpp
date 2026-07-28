@@ -106,7 +106,7 @@ void App::handleWifiPage()
 
     if(ok_.isPressed())
     {
-        wifiService.connect(g_data.wifiSelectIndex);
+        wifiService.startConfig(g_data.wifiSelectIndex);
     }
 
     if(key1_.isPressed())
