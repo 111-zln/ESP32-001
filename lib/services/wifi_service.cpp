@@ -54,9 +54,7 @@ void WifiService::scan()
 {
     Serial.println("scan");
 
-    WiFi.mode(WIFI_AP_STA);
-
-    delay(100);
+    vTaskDelay(pdMS_TO_TICKS(100));
 
     Serial.println("开始扫描");
 
@@ -103,7 +101,6 @@ bool WifiService::requestScan()
 
 void WifiService::startAP()
 {
-    WiFi.mode(WIFI_AP_STA);
 
     WiFi.softAP(AP_ID, AP_PWD);
 
@@ -158,6 +155,8 @@ void WifiService::handleSave()
 
     g_data.savedSSID = selectedSSID_;
     g_data.savedPWD  = selectedPWD_;
+
+    delay(100);
 
     WiFi.begin(
         selectedSSID_.c_str(),
