@@ -5,6 +5,7 @@
 #include "sensor_service.h"
 #include "wifi_service.h"
 
+
 // '电池', 16x16px
 const unsigned char epd_bitmap_battery_10 [] PROGMEM = {
 	0xff, 0xff, 0x3f, 0xfc, 0x3f, 0xfc, 0x0f, 0xf0, 0xef, 0xf7, 0xef, 0xf7, 0xef, 0xf7, 0xef, 0xf7, 
@@ -139,6 +140,8 @@ void TempPage::draw()
 void TempPage::onEnter()
 {
     Serial.println("Temp Enter");
+
+    xTaskNotifyGive(sensorTaskHandle);
 }
 
 void TempPage::onExit()
@@ -212,6 +215,10 @@ void WifiPage::drawConnected()
     u8g2_.drawStr(20,35,g_data.savedSSID.c_str());
 }
 
+void WifiPage::onEnter()
+{
+    wifiService.requestScan();
+}
 
 //开关操作
 void SwitchPage::draw()

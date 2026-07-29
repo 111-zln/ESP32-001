@@ -2,7 +2,7 @@
 
 #include "LCD.h"
 #include "data.h"
-
+#include "../src/app/tasks.h"
 
 
 // 页面基类
@@ -58,6 +58,9 @@ public:
     void drawWifiList();
     void drawConnecting();
     void drawConnected();
+
+    void onEnter() override;
+    void onExit() override;
 
 
 private:

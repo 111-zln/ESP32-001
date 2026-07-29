@@ -184,12 +184,16 @@ void App::switch_Page(Page* page)
     if(page == nullptr)
         return;
 
+        
+    if(currentPage_)
+    {
+        currentPage_->onExit();
+    }
+
     currentPage_ = page;
 
-    if(page == &tempPage)
-    {
-        xTaskNotifyGive(sensorTaskHandle);
-    }
+    currentPage_->onEnter();
+
 
     requestRefresh();
 }
