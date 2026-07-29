@@ -22,7 +22,6 @@ struct DeviceData
     int battery = 100;
 
     // WiFi
-    bool wifiConnected = false;
     bool mqttConnected = false;
     WifiState wifiState ;
 

@@ -38,7 +38,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length)
     {
     return;
     }
-
+/*
     if(strcmp(page, "wifi") == 0)
     {
         requestPage(&wifiPage);
@@ -62,7 +62,7 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length)
     else
     {
         return;
-    }
+    }*/
 
 }
 //mqtt连接一次

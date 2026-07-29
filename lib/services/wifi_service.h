@@ -4,6 +4,7 @@
 #include <WebServer.h>
 #include "data.h"
 #include "freertos/queue.h"
+#include "freertos/event_groups.h"
 
 enum class WifiCommand
 {
@@ -14,7 +15,7 @@ enum class WifiCommand
 struct WifiMessage
 {
     WifiCommand command;
-     int index = -1;
+    int index = -1;
 };
 
 class WifiService
@@ -58,15 +59,17 @@ private:
     void handleSave();
 
     WebServer server_{80};
-
-    bool wifiConnecting_ = false;
-    bool wifiConnected_ = false;
     bool serverStarted_ = false;
+    
+    static constexpr EventBits_t WIFI_CONNECTING_BIT = BIT0;
+    static constexpr EventBits_t WIFI_CONNECTED_BIT  = BIT1;
 
     String selectedSSID_;
     String selectedPWD_;
 
+    //freertos
     QueueHandle_t queue_;
+    EventGroupHandle_t eventGroup_;
 };
 
 extern WifiService wifiService;

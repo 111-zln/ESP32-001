@@ -3,7 +3,6 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-
 static TaskHandle_t uiTaskHandle     = nullptr;
 static TaskHandle_t sensorTaskHandle = nullptr;
 static TaskHandle_t wifiTaskHandle   = nullptr;
@@ -42,6 +41,8 @@ void createTasks()
         &wifiTaskHandle,
         0
     );
+
+
     
 }
 

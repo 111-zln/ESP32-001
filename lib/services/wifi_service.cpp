@@ -6,10 +6,14 @@ void WifiService::init()
 {
     WiFi.mode(WIFI_AP_STA);
 
-    wifiConnecting_ = false;
-    wifiConnected_ = false;
-
     queue_ = xQueueCreate(5, sizeof(WifiMessage));
+
+    eventGroup_ = xEventGroupCreate();
+
+    if(eventGroup_ == nullptr)
+    {
+        Serial.println("Create EventGroup Failed");
+    }
 
 }
 
@@ -17,7 +21,7 @@ void WifiService::update()
 {
     WifiMessage msg;
 
-    while(xQueueReceive(queue_, &msg, 0) == pdTRUE)
+    while(xQueueReceive(queue_, &msg, 0) == pdTRUE)//取队列
     {
         switch(msg.command)
         {
@@ -33,14 +37,12 @@ void WifiService::update()
 
     server_.handleClient();
 
-    if(wifiConnecting_)
+    if(isConnecting())
     {
         if(WiFi.status() == WL_CONNECTED)
         {
-            wifiConnecting_ = false;
-            wifiConnected_  = true;
-
-            g_data.wifiConnected = true;
+            xEventGroupClearBits(eventGroup_,WIFI_CONNECTING_BIT);
+            xEventGroupSetBits(eventGroup_,WIFI_CONNECTED_BIT);
 
             Serial.println("WiFi Connected!");
             Serial.println(WiFi.localIP());
@@ -139,8 +141,10 @@ void WifiService::handleRoot()
 
 void WifiService::handleSave()
 {
-    wifiConnecting_ = true;
-    wifiConnected_ = false;
+    xEventGroupClearBits(eventGroup_,WIFI_CONNECTED_BIT); //取消打√
+    xEventGroupSetBits(eventGroup_,WIFI_CONNECTING_BIT);//将这个事件打√
+
+    WiFi.disconnect();
 
     selectedPWD_ = server_.arg("pwd");
 
@@ -191,12 +195,16 @@ void WifiService::setSelectedSSID(const String& ssid)
 
 bool WifiService::isConnecting() const
 {
-    return wifiConnecting_;
+     EventBits_t bits = xEventGroupGetBits(eventGroup_);
+
+    return bits & WIFI_CONNECTING_BIT;
 }
 
 bool WifiService::isConnected() const
 {
-    return wifiConnected_;
+    EventBits_t bits = xEventGroupGetBits(eventGroup_);
+
+    return bits & WIFI_CONNECTED_BIT;
 }
 
 String WifiService::getSelectedSSID() const
@@ -214,8 +222,6 @@ bool WifiService::startConfig(int index)
     startAP();
 
     startWebServer();
-
-
 
     return true;
 }
