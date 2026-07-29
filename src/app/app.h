@@ -6,6 +6,7 @@
 #include "Button.h"
 #include "Pins.hpp"
 #include "Board.h"
+#include "tasks.h"
 
 class App
 {

@@ -179,8 +179,13 @@ void App::handleAirPage()
 
 void App::switch_Page(Page* page)
 {
-    if(page != nullptr)
+    if(page == nullptr)
+        return;
+
+    currentPage_ = page;
+
+    if(page == &tempPage)
     {
-        currentPage_ = page;
+        xTaskNotifyGive(sensorTaskHandle);
     }
 }

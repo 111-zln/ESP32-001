@@ -2,14 +2,18 @@
 #include "app.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/timers.h"
 
+
+static TimerHandle_t sensorTimer = nullptr;
+
+TaskHandle_t sensorTaskHandle = nullptr;
 static TaskHandle_t uiTaskHandle     = nullptr;
-static TaskHandle_t sensorTaskHandle = nullptr;
 static TaskHandle_t wifiTaskHandle   = nullptr;
 
 void createTasks()
 {
-    //ui
+    //ui task
     xTaskCreatePinnedToCore(
         uiTask,         // Task函数
         "UI",           // 名字
@@ -19,8 +23,8 @@ void createTasks()
         &uiTaskHandle,  // TaskHandle
         1               // Core1
     );
-
-    //sensor
+ 
+    //sensor task
     xTaskCreatePinnedToCore(
         sensorTask,
         "Sensor",
@@ -31,7 +35,7 @@ void createTasks()
         0
     );
 
-    //wifi
+    //wifi task
     xTaskCreatePinnedToCore(
         wifiTask,
         "Wifi",
@@ -43,7 +47,15 @@ void createTasks()
     );
 
 
-    
+    //sensor timer
+    sensorTimer = xTimerCreate(
+        "SensorTimer",              // 名字
+        pdMS_TO_TICKS(1000),        // 周期
+        pdTRUE,                     // 自动循环
+        nullptr,                    // 用户参数
+        sensorTimerCallback         // 回调函数
+    );
+    xTimerStart(sensorTimer, 0);
 }
 
 static void uiTask(void *pv)
@@ -60,9 +72,11 @@ static void sensorTask(void *pv)
 {
     while(1)
     {
+        ulTaskNotifyTake(pdTRUE,portMAX_DELAY);//睡觉，直到有人通知我
+
         sensorService.update();
 
-        vTaskDelay(pdMS_TO_TICKS(1000));
+       
     }
 }
 
@@ -74,4 +88,9 @@ static void wifiTask(void *pv)
 
         vTaskDelay(pdMS_TO_TICKS(10));
     }
+}
+
+static void sensorTimerCallback(TimerHandle_t timer)
+{
+    xTaskNotifyGive(sensorTaskHandle);
 }
