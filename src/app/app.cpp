@@ -39,6 +39,8 @@ void App::update()
       if(currentPage_)
     {
         currentPage_->draw();
+
+        needRefresh_ = false;
     }
 }
 
@@ -188,4 +190,11 @@ void App::switch_Page(Page* page)
     {
         xTaskNotifyGive(sensorTaskHandle);
     }
+
+    requestRefresh();
+}
+
+void App::requestRefresh()
+{
+    needRefresh_ = true;
 }

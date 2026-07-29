@@ -17,8 +17,11 @@ public:
 
     void init();
     void update();
+    void requestRefresh();
 
 private:
+
+    bool needRefresh_ = true;
     // 当前页面
     Page* currentPage_;
 
