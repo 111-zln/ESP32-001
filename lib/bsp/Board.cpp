@@ -26,9 +26,6 @@ void Board::init()
     bme_.init(i2c_);
     co2_.init(i2c_);
 
-    // 3. 初始化服务
-    sensor_.init(bme_, co2_);
-
     // 4. 启动提示
     rgb_.green();
 }

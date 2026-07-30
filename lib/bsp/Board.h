@@ -13,6 +13,7 @@
 
 #include "display_service.h"
 #include "sensor_service.h"
+#include "wifi_service.h"
 
 class Board
 {
@@ -41,9 +42,5 @@ class Board
         Button ok_;
         Button key1_;
         Button key2_;
-
-
-        // Services
-        Sensor sensor_;
 };
 extern Board board_;
