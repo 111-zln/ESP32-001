@@ -5,6 +5,7 @@
 #include "data.h"
 #include "freertos/queue.h"
 #include "freertos/event_groups.h"
+#include "board.h"
 
 enum class WifiState
 {

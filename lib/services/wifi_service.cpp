@@ -52,6 +52,10 @@ void WifiService::update()
             Serial.println(WiFi.localIP());
 
             state_ = WifiState::Connected;
+
+            board_.rgb_.green();
+            vTaskDelay(pdMS_TO_TICKS(1000));
+            board_.rgb_.off();
         }
         else
         {
@@ -66,6 +70,14 @@ void WifiService::update()
                 state_ = WifiState::Failed;
 
                 Serial.println("WiFi Connect Timeout");
+
+                for(int i=0;i<3;i++)
+                {
+                    board_.rgb_.red();
+                    vTaskDelay(pdMS_TO_TICKS(200));
+                    board_.rgb_.off();
+                    vTaskDelay(pdMS_TO_TICKS(200));
+                }
             }
         }
     }
@@ -73,6 +85,7 @@ void WifiService::update()
 
 void WifiService::scan()
 {
+    board_.rgb_.blue();
     state_ = WifiState::Scanning;
 
     Serial.println("scan");
@@ -80,6 +93,8 @@ void WifiService::scan()
     vTaskDelay(pdMS_TO_TICKS(100));
 
     Serial.println("开始扫描");
+
+    
 
     int n = WiFi.scanNetworks();
 
@@ -114,6 +129,8 @@ void WifiService::scan()
     state_ = WifiState::ListReady;
 
     WiFi.scanDelete();
+
+    board_.rgb_.off();
 }
 
 bool WifiService::requestScan()
