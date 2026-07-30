@@ -37,7 +37,7 @@ void WifiService::update()
 
     server_.handleClient();
 
-    if(isConnecting())
+    if(state_== WifiState::Connecting)
     {
         if(WiFi.status() == WL_CONNECTED)
         {
@@ -46,6 +46,23 @@ void WifiService::update()
 
             Serial.println("WiFi Connected!");
             Serial.println(WiFi.localIP());
+
+            state_ = WifiState::Connected;
+        }
+        else
+        {
+            TickType_t elapsed =xTaskGetTickCount() - connectStartTick_;
+
+            if(elapsed > CONNECT_TIMEOUT)
+            {
+                WiFi.disconnect();
+
+                xEventGroupClearBits(eventGroup_,WIFI_CONNECTING_BIT);
+
+                state_ = WifiState::Failed;
+
+                Serial.println("WiFi Connect Timeout");
+            }
         }
     }
 }
@@ -66,6 +83,7 @@ void WifiService::scan()
     {
         Serial.println("没有发现WiFi");
         g_data.wifiCount = 0;
+        state_ = WifiState::ListReady;
         return;
     }
 
@@ -160,16 +178,16 @@ void WifiService::handleSave()
     g_data.savedSSID = selectedSSID_;
     g_data.savedPWD  = selectedPWD_;
 
-    delay(100);
-    
+    vTaskDelay(pdMS_TO_TICKS(100));
+
     state_ = WifiState::Connecting;
+    connectStartTick_ = xTaskGetTickCount();
     WiFi.begin(
         selectedSSID_.c_str(),
         selectedPWD_.c_str());
     
 
     server_.send(200, "text/html", "<h1>Connecting...</h1>");
-    state_ = WifiState::Connected;
 }
 
 void WifiService::startWebServer()
@@ -229,6 +247,7 @@ bool WifiService::startConfig(int index)
     state_ = WifiState::APStarted;
 
     startWebServer();
+    state_ = WifiState::WaitingPassword;
 
     return true;
 }

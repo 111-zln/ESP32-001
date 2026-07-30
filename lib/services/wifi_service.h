@@ -43,6 +43,7 @@ struct WifiMessage
 class WifiService
 {
 public:
+
     void init();
     void update();
 
@@ -80,6 +81,7 @@ public:
     WifiState getState() const;
 
 private:
+
     void handleRoot();
     void handleSave();
 
@@ -97,10 +99,10 @@ private:
     EventGroupHandle_t eventGroup_;
 
     
-    WifiState state_ ; //wifi状态
-    TickType_t connectStartTick_; //连接时间
- 
-    
+    WifiState state_ = WifiState::Idle; //wifi状态
+    TickType_t connectStartTick_ = 0; //连接时间
+    static constexpr TickType_t CONNECT_TIMEOUT =pdMS_TO_TICKS(15000); //连接超时时间 15s
+
 };
 
 extern WifiService wifiService;
