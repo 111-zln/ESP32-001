@@ -23,7 +23,6 @@ struct DeviceData
 
     // WiFi
     bool mqttConnected = false;
-    WifiState wifiState ;
 
     String wifiList[10];
     int wifiCount = 0;
@@ -53,11 +52,4 @@ void saveTemp(float temp);
 void saveWifiConfig(String ssid, String pwd);
 
 
-//================ wifi状态 =================
-enum WifiState
-{
-    WIFI_LIST,
-    WIFI_CONNECTING,
-    WIFI_CONNECTED
-};
 #endif

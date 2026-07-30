@@ -6,17 +6,39 @@
 #include "freertos/queue.h"
 #include "freertos/event_groups.h"
 
-enum class WifiCommand
+enum class WifiState
+{
+    Idle,        //空闲
+
+    Scanning,    //扫描中
+
+    ListReady,   //准备列表
+
+    APStarted,   //AP已开启
+
+    WaitingPassword,//等待获取密码
+
+    Connecting,  //wifi连接中
+  
+    Connected,   //wifi连接成功
+
+    Failed       //失败
+};
+
+//wifi指令
+enum class WifiCommand 
 {
     Scan,
     StartConfig
 };
 
+//wifi信息
 struct WifiMessage
 {
     WifiCommand command;
     int index = -1;
 };
+
 
 class WifiService
 {
@@ -45,14 +67,17 @@ public:
     bool isConnecting() const;
     bool isConnected() const;
 
-    //
+    //联网要求
     String getSelectedSSID() const;
     String getApIP() const;
 
+    //AP信息
     String apIP_;
-
     String AP_ID = "ESP32_Remoter" ;
     String AP_PWD = "12345678" ;
+
+    //获取wifi状态
+    WifiState getState() const;
 
 private:
     void handleRoot();
@@ -70,6 +95,12 @@ private:
     //freertos
     QueueHandle_t queue_;
     EventGroupHandle_t eventGroup_;
+
+    
+    WifiState state_ ; //wifi状态
+    TickType_t connectStartTick_; //连接时间
+ 
+    
 };
 
 extern WifiService wifiService;

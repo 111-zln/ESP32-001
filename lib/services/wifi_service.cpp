@@ -52,6 +52,8 @@ void WifiService::update()
 
 void WifiService::scan()
 {
+    state_ = WifiState::Scanning;
+
     Serial.println("scan");
 
     vTaskDelay(pdMS_TO_TICKS(100));
@@ -86,6 +88,8 @@ void WifiService::scan()
 
         Serial.println(" dBm)");
     }
+
+    state_ = WifiState::ListReady;
 
     WiFi.scanDelete();
 }
@@ -157,12 +161,15 @@ void WifiService::handleSave()
     g_data.savedPWD  = selectedPWD_;
 
     delay(100);
-
+    
+    state_ = WifiState::Connecting;
     WiFi.begin(
         selectedSSID_.c_str(),
         selectedPWD_.c_str());
+    
 
     server_.send(200, "text/html", "<h1>Connecting...</h1>");
+    state_ = WifiState::Connected;
 }
 
 void WifiService::startWebServer()
@@ -219,6 +226,7 @@ bool WifiService::startConfig(int index)
     selectedSSID_ = g_data.wifiList[index];
 
     startAP();
+    state_ = WifiState::APStarted;
 
     startWebServer();
 

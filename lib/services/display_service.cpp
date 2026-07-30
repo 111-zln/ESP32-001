@@ -157,18 +157,21 @@ void WifiPage::draw()
     u8g2_.setFont(u8g2_font_5x8_tf);
 
 
-    switch(g_data.wifiState)
+    switch(wifiService.getState())
     {
-    case WIFI_LIST:
+    case WifiState::ListReady:
         drawWifiList();
         break;
 
-    case WIFI_CONNECTING:
+    case WifiState::Connecting:
         drawConnecting();
         break;
 
-    case WIFI_CONNECTED:
+    case WifiState::Connected:
         drawConnected();
+        break;
+
+     default:
         break;
     }
 
