@@ -226,6 +226,11 @@ void WifiService::startWebServer()
         handleSave();
     });
 
+    server_.on("/update", HTTP_GET, [this]()
+    {
+    handleOTA();
+    });
+
     server_.begin();
 
     Serial.println("WebServer Started");
@@ -317,4 +322,25 @@ bool WifiService::retry()
         selectedPWD_.c_str());
 
     return true;
+}
+
+void WifiService::handleOTA()
+{
+    String html;
+
+    html += "<html><body>";
+
+    html += "<h2>ESP32 OTA</h2>";
+
+    html += "<form method='POST' action='/update' enctype='multipart/form-data'>";
+
+    html += "<input type='file' name='firmware'><br><br>";
+
+    html += "<input type='submit' value='Upload'>";
+
+    html += "</form>";
+
+    html += "</body></html>";
+
+    server_.send(200, "text/html", html);
 }

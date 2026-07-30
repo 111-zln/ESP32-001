@@ -91,6 +91,8 @@ private:
     void handleRoot();
     void handleSave();
 
+    void handleOTA(); 
+
     WebServer server_{80};
     bool serverStarted_ = false;
     
