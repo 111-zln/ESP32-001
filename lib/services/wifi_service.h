@@ -29,7 +29,8 @@ enum class WifiState
 enum class WifiCommand 
 {
     Scan,
-    StartConfig
+    StartConfig,
+    Retry  
 };
 
 //wifi信息
@@ -79,6 +80,10 @@ public:
 
     //获取wifi状态
     WifiState getState() const;
+
+    //重连
+    bool requestRetry();
+    bool retry();
 
 private:
 

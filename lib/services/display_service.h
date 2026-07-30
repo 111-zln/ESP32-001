@@ -58,6 +58,7 @@ public:
     void drawWifiList();
     void drawConnecting();
     void drawConnected();
+    void drawFailed();
 
     void onEnter() override;
     void onExit() override;

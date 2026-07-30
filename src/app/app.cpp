@@ -36,7 +36,7 @@ void App::update()
         handleBatteryPage();
     }
 
-      if(currentPage_)
+      if(currentPage_ && needRefresh_)
     {
         currentPage_->draw();
 
@@ -92,6 +92,21 @@ void App::handleSensorPage()
 
 void App::handleWifiPage()
 {
+    if(wifiService.getState() == WifiState::Failed)
+    {
+        if(board_.ok_.isPressed())
+        {
+            wifiService.requestRetry();
+        }
+
+        if(board_.key1_.isPressed())
+        {
+            switch_Page(&mainmenuPage);
+        }
+
+    return;
+    }
+
     if(board_.up_.isPressed())
     {
         if(g_data.wifiSelectIndex > 0)
@@ -117,6 +132,8 @@ void App::handleWifiPage()
     {
         switch_Page(&mainmenuPage);
     }
+
+
 }
 
 void App::handleAirPage()

@@ -170,6 +170,10 @@ void WifiPage::draw()
     case WifiState::Connected:
         drawConnected();
         break;
+    
+    case WifiState::Failed:
+        drawFailed();
+        break;  
 
      default:
         break;
@@ -216,6 +220,13 @@ void WifiPage::drawConnected()
 {
     u8g2_.drawStr(20,20,"Connected");
     u8g2_.drawStr(20,35,g_data.savedSSID.c_str());
+}
+
+void WifiPage::drawFailed()
+{
+    u8g2_.drawStr(20,20,"Connect Failed");
+    u8g2_.drawStr(20,35,"OK : Retry");
+    u8g2_.drawStr(20,50,"KEY1 : Back");
 }
 
 void WifiPage::onEnter()

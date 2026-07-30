@@ -32,6 +32,10 @@ void WifiService::update()
         case WifiCommand::StartConfig:
             startConfig(msg.index);
             break;
+
+        case WifiCommand::Retry:
+            retry();
+            break;
         }
     }
 
@@ -265,4 +269,35 @@ bool WifiService::requestStartConfig(int index)
 String WifiService::getApIP() const
 {
     return apIP_;
+}
+
+bool WifiService::requestRetry()
+{
+    WifiMessage msg;
+    msg.command = WifiCommand::Retry;
+
+    return xQueueSend(queue_, &msg, 0) == pdPASS;
+}
+
+bool WifiService::retry()
+{
+    if(state_ != WifiState::Failed)
+        return false;
+
+    xEventGroupClearBits(eventGroup_, WIFI_CONNECTED_BIT);
+    xEventGroupSetBits(eventGroup_, WIFI_CONNECTING_BIT);
+
+    WiFi.disconnect();
+
+    vTaskDelay(pdMS_TO_TICKS(100));
+
+    connectStartTick_ = xTaskGetTickCount();
+
+    state_ = WifiState::Connecting;
+
+    WiFi.begin(
+        selectedSSID_.c_str(),
+        selectedPWD_.c_str());
+
+    return true;
 }
