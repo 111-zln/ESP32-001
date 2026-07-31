@@ -6,24 +6,30 @@
 #include "freertos/queue.h"
 #include "freertos/event_groups.h"
 #include "board.h"
+#include <Update.h>
 
 enum class WifiState
 {
-    Idle,        //空闲
+    Idle,            //空闲
+ 
+    Scanning,        //扫描中
 
-    Scanning,    //扫描中
+    ListReady,       //准备列表
 
-    ListReady,   //准备列表
+    APStarted,       //AP已开启
 
-    APStarted,   //AP已开启
+    WaitingPassword, //等待获取密码
 
-    WaitingPassword,//等待获取密码
-
-    Connecting,  //wifi连接中
+    Connecting,      //wifi连接中
   
-    Connected,   //wifi连接成功
+    Connected,       //wifi连接成功
 
-    Failed       //失败
+    Failed,          //失败
+
+    OTAReady,        // 可以OTA
+    OTAUpdating,     // OTA中
+    OTASuccess,      // OTA成功
+    OTAFailed        // OTA失败
 };
 
 //wifi指令
@@ -92,6 +98,7 @@ private:
     void handleSave();
 
     void handleOTA(); 
+    void handleOTAUpload(); 
 
     WebServer server_{80};
     bool serverStarted_ = false;

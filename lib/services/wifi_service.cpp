@@ -231,6 +231,15 @@ void WifiService::startWebServer()
     handleOTA();
     });
 
+    server_.on("/update",HTTP_POST,[this]()
+    {
+        server_.send(200,"text/plain","Update Success, Rebooting...");
+    },
+    [this]()
+    {
+        handleOTAUpload();
+    });
+
     server_.begin();
 
     Serial.println("WebServer Started");
@@ -343,4 +352,53 @@ void WifiService::handleOTA()
     html += "</body></html>";
 
     server_.send(200, "text/html", html);
+}
+
+void WifiService::handleOTAUpload()
+{
+    HTTPUpload& upload = server_.upload();
+
+    switch(upload.status)
+    {
+        case UPLOAD_FILE_START:
+
+            Serial.println("Upload Start");
+
+            if(!Update.begin(UPDATE_SIZE_UNKNOWN))
+            {
+                Update.printError(Serial);
+            }
+
+            break;
+
+        case UPLOAD_FILE_WRITE:
+
+            if(Update.write(upload.buf, upload.currentSize)!= upload.currentSize)
+            {
+                Update.printError(Serial);
+            }
+
+            break;
+
+        case UPLOAD_FILE_END:
+
+            if(Update.end(true))
+            {
+                Serial.println("OTA Success");
+
+                Serial.println("Reboot...");
+
+                ESP.restart();
+            }
+            else
+            {
+                Update.printError(Serial);
+            }
+
+            break;
+
+        default:
+
+            break;
+    }
 }
