@@ -362,10 +362,13 @@ void WifiService::handleOTAUpload()
     {
         case UPLOAD_FILE_START:
 
+            state_ = WifiState::OTAUpdating;
+
             Serial.println("Upload Start");
 
             if(!Update.begin(UPDATE_SIZE_UNKNOWN))
             {
+                state_ = WifiState::OTAFailed;
                 Update.printError(Serial);
             }
 
@@ -375,6 +378,7 @@ void WifiService::handleOTAUpload()
 
             if(Update.write(upload.buf, upload.currentSize)!= upload.currentSize)
             {
+                state_ = WifiState::OTAFailed;
                 Update.printError(Serial);
             }
 
@@ -384,6 +388,8 @@ void WifiService::handleOTAUpload()
 
             if(Update.end(true))
             {
+                state_ = WifiState::OTASuccess;
+
                 Serial.println("OTA Success");
 
                 Serial.println("Reboot...");
@@ -392,6 +398,7 @@ void WifiService::handleOTAUpload()
             }
             else
             {
+                state_ = WifiState::OTAFailed;
                 Update.printError(Serial);
             }
 
