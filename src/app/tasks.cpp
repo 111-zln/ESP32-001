@@ -92,5 +92,8 @@ static void wifiTask(void *pv)
 
 static void sensorTimerCallback(TimerHandle_t timer)
 {
-    xTaskNotifyGive(sensorTaskHandle);
+    if(sensorTaskHandle != nullptr)
+    {
+        xTaskNotifyGive(sensorTaskHandle);
+    }
 }
