@@ -2,122 +2,228 @@
 
 #include <WiFi.h>
 #include <WebServer.h>
+#include <Update.h>
+
 #include "data.h"
+#include "board.h"
+
 #include "freertos/queue.h"
 #include "freertos/event_groups.h"
-#include "board.h"
-#include <Update.h>
+
+
+// =====================================================
+// WiFi 状态
+// =====================================================
 
 enum class WifiState
 {
-    Idle,            //空闲
- 
-    Scanning,        //扫描中
+    Idle,               // 空闲
 
-    ListReady,       //准备列表
+    Scanning,           // 扫描中
+    ListReady,          // WiFi列表准备完成
 
-    APStarted,       //AP已开启
+    APStarted,          // AP已开启
+    WaitingPassword,    // 等待网页输入密码
 
-    WaitingPassword, //等待获取密码
+    Connecting,         // WiFi连接中
+    Connected,          // WiFi连接成功
+    Failed,             // WiFi连接失败
 
-    Connecting,      //wifi连接中
-  
-    Connected,       //wifi连接成功
-
-    Failed,          //失败
-
-    OTAReady,        // 可以OTA
-    OTAUpdating,     // OTA中
-    OTASuccess,      // OTA成功
-    OTAFailed        // OTA失败
+    OTAReady,           // 可以进行OTA
+    OTAUpdating,        // OTA升级中
+    OTASuccess,         // OTA升级成功
+    OTAFailed           // OTA升级失败
 };
 
-//wifi指令
-enum class WifiCommand 
+
+// =====================================================
+// WiFi 指令
+// =====================================================
+
+enum class WifiCommand
 {
     Scan,
     StartConfig,
-    Retry  
+    Retry
 };
 
-//wifi信息
+
+// =====================================================
+// WiFi 消息
+// =====================================================
+
 struct WifiMessage
 {
     WifiCommand command;
+
     int index = -1;
 };
 
+
+// =====================================================
+// WiFi Service
+// =====================================================
 
 class WifiService
 {
 public:
 
+    // =========================
+    // 生命周期
+    // =========================
+
     void init();
     void update();
 
-    // WiFi扫描
+
+    // =========================
+    // WiFi 扫描
+    // =========================
+
     void scan();
     bool requestScan();
 
-    // 开热点
+
+    // =========================
+    // AP
+    // =========================
+
     void startAP();
 
-    // Web配置
+
+    // =========================
+    // Web 配置
+    // =========================
+
     void startWebServer();
 
-    // 连接指定WiFi
     bool startConfig(int index);
     bool requestStartConfig(int index);
 
-    // 当前选择的SSID
+
+    // =========================
+    // Retry
+    // =========================
+
+    bool retry();
+    bool requestRetry();
+
+
+    // =========================
+    // SSID
+    // =========================
+
     void setSelectedSSID(const String& ssid);
 
-    // 状态查询
+    String getSelectedSSID() const;
+
+
+    // =========================
+    // WiFi 状态
+    // =========================
+
+    WifiState getState() const;
+
     bool isConnecting() const;
     bool isConnected() const;
 
-    //联网要求
-    String getSelectedSSID() const;
+
+    // =========================
+    // AP / 网络信息
+    // =========================
+
     String getApIP() const;
 
-    //AP信息
+
+    // =========================
+    // AP 信息
+    // =========================
+
     String apIP_;
-    String AP_ID = "ESP32_Remoter" ;
-    String AP_PWD = "12345678" ;
 
-    //获取wifi状态
-    WifiState getState() const;
+    String AP_ID  = "ESP32_Remoter";
+    String AP_PWD = "12345678";
 
-    //重连
-    bool requestRetry();
-    bool retry();
 
 private:
+
+    // =================================================
+    // WebServer
+    // =================================================
 
     void handleRoot();
     void handleSave();
 
-    void handleOTA(); 
-    void handleOTAUpload(); 
+
+    // =================================================
+    // OTA
+    // =================================================
+
+    void handleOTA();
+    void handleOTAUpload();
+
+
+    // =================================================
+    // 状态管理
+    // =================================================
+
+    void setState(WifiState state);
+
+
+    // =================================================
+    // WebServer
+    // =================================================
 
     WebServer server_{80};
+
     bool serverStarted_ = false;
-    
+
+
+    // =================================================
+    // EventGroup
+    // =================================================
+
     static constexpr EventBits_t WIFI_CONNECTING_BIT = BIT0;
     static constexpr EventBits_t WIFI_CONNECTED_BIT  = BIT1;
+
+
+    // =================================================
+    // 当前 WiFi
+    // =================================================
 
     String selectedSSID_;
     String selectedPWD_;
 
-    //freertos
-    QueueHandle_t queue_;
-    EventGroupHandle_t eventGroup_;
 
-    
-    WifiState state_ = WifiState::Idle; //wifi状态
-    TickType_t connectStartTick_ = 0; //连接时间
-    static constexpr TickType_t CONNECT_TIMEOUT =pdMS_TO_TICKS(15000); //连接超时时间 15s
+    // =================================================
+    // FreeRTOS
+    // =================================================
 
+    QueueHandle_t queue_ = nullptr;
+
+    EventGroupHandle_t eventGroup_ = nullptr;
+
+
+    // =================================================
+    // WiFi 状态
+    // =================================================
+
+    WifiState state_ = WifiState::Idle;
+
+
+    // =================================================
+    // WiFi 连接超时
+    // =================================================
+
+    TickType_t connectStartTick_ = 0;
+
+    static constexpr TickType_t CONNECT_TIMEOUT =
+        pdMS_TO_TICKS(15000);
 };
+
+
+// =====================================================
+// 全局 WifiService
+// =====================================================
 
 extern WifiService wifiService;
