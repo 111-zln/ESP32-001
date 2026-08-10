@@ -122,10 +122,8 @@ void WifiService::update()
 }
 
 
-// =====================================================
 // WiFi扫描
 // =====================================================
-
 void WifiService::scan()
 {
     setState(WifiState::Scanning);
@@ -191,10 +189,9 @@ void WifiService::scan()
 }
 
 
-// =====================================================
+
 // 请求扫描
 // =====================================================
-
 bool WifiService::requestScan()
 {
     WifiMessage msg;
@@ -209,10 +206,8 @@ bool WifiService::requestScan()
 }
 
 
-// =====================================================
 // 开启AP
 // =====================================================
-
 void WifiService::startAP()
 {
     WiFi.softAP(
@@ -226,10 +221,8 @@ void WifiService::startAP()
 }
 
 
-// =====================================================
 // Web根页面
 // =====================================================
-
 void WifiService::handleRoot()
 {
     String html;
@@ -263,10 +256,8 @@ void WifiService::handleRoot()
 }
 
 
-// =====================================================
 // 保存WiFi密码并开始连接
 // =====================================================
-
 void WifiService::handleSave()
 {
     WiFi.disconnect();
@@ -318,10 +309,8 @@ void WifiService::handleSave()
 }
 
 
-// =====================================================
 // 启动WebServer
 // =====================================================
-
 void WifiService::startWebServer()
 {
     if(serverStarted_)
@@ -400,10 +389,8 @@ void WifiService::startWebServer()
 }
 
 
-// =====================================================
 // 设置当前选择的SSID
 // =====================================================
-
 void WifiService::setSelectedSSID(
     const String& ssid
 )
@@ -412,10 +399,8 @@ void WifiService::setSelectedSSID(
 }
 
 
-// =====================================================
 // 判断是否正在连接
 // =====================================================
-
 bool WifiService::isConnecting() const
 {
     EventBits_t bits =
@@ -425,10 +410,9 @@ bool WifiService::isConnecting() const
 }
 
 
-// =====================================================
+
 // 判断是否已经连接
 // =====================================================
-
 bool WifiService::isConnected() const
 {
     EventBits_t bits =
@@ -438,30 +422,24 @@ bool WifiService::isConnected() const
 }
 
 
-// =====================================================
 // 获取WiFi状态
 // =====================================================
-
 WifiState WifiService::getState() const
 {
     return state_;
 }
 
 
-// =====================================================
 // 获取SSID
 // =====================================================
-
 String WifiService::getSelectedSSID() const
 {
     return selectedSSID_;
 }
 
 
-// =====================================================
 // 开始WiFi配置
 // =====================================================
-
 bool WifiService::startConfig(int index)
 {
     if(index < 0 || index >= g_data.wifiCount)
@@ -486,10 +464,8 @@ bool WifiService::startConfig(int index)
 }
 
 
-// =====================================================
 // 请求开始配置
 // =====================================================
-
 bool WifiService::requestStartConfig(int index)
 {
     WifiMessage msg;
@@ -508,20 +484,16 @@ bool WifiService::requestStartConfig(int index)
 }
 
 
-// =====================================================
 // 获取AP IP
 // =====================================================
-
 String WifiService::getApIP() const
 {
     return apIP_;
 }
 
 
-// =====================================================
 // 请求Retry
 // =====================================================
-
 bool WifiService::requestRetry()
 {
     WifiMessage msg;
@@ -538,10 +510,8 @@ bool WifiService::requestRetry()
 }
 
 
-// =====================================================
 // Retry
 // =====================================================
-
 bool WifiService::retry()
 {
     if(state_ != WifiState::Failed)
@@ -575,10 +545,8 @@ bool WifiService::retry()
 }
 
 
-// =====================================================
 // OTA页面
 // =====================================================
-
 void WifiService::handleOTA()
 {
     String html;
@@ -614,10 +582,8 @@ void WifiService::handleOTA()
 }
 
 
-// =====================================================
 // OTA文件上传
 // =====================================================
-
 void WifiService::handleOTAUpload()
 {
     HTTPUpload& upload =
@@ -725,10 +691,8 @@ void WifiService::handleOTAUpload()
 }
 
 
-// =====================================================
 // 统一设置WiFi状态
 // =====================================================
-
 void WifiService::setState(WifiState state)
 {
     state_ = state;
