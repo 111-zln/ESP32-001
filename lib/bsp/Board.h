@@ -11,10 +11,6 @@
 #include "Bme280.h"
 #include "CO2.h"
 
-#include "display_service.h"
-#include "sensor_service.h"
-#include "wifi_service.h"
-
 class Board
 {
     public:

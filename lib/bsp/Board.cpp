@@ -26,8 +26,6 @@ void Board::init()
     bme_.init(i2c_);
     co2_.init(i2c_);
 
-    // 4. 启动提示
-    rgb_.green();
 }
 
 //初始化列表
