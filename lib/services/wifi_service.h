@@ -136,13 +136,11 @@ public:
 
 
     // =========================
-    // AP 信息
+    // AP 配置
     // =========================
 
-    String apIP_;
-
-    String AP_ID  = "ESP32_Remoter";
-    String AP_PWD = "12345678";
+    static constexpr const char* AP_ID  = "ESP32_Remoter";
+    static constexpr const char* AP_PWD = "12345678";
 
 
 private:
@@ -193,6 +191,13 @@ private:
 
     String selectedSSID_;
     String selectedPWD_;
+
+
+    // =================================================
+    // AP 信息
+    // =================================================
+
+    String apIP_;
 
 
     // =================================================

@@ -6,37 +6,34 @@ App app_;
 void App::init()
 {
     currentPage_ = &mainmenuPage;
+
+    requestRefresh();
 }
 
 void App::update()
 {
-    // 当前页面处理按键
     if(currentPage_ == &mainmenuPage)
     {
         handleMainMenu();
     }
-
     else if(currentPage_ == &tempPage)
     {
         handleSensorPage();
     }
-
     else if(currentPage_ == &wifiPage)
     {
         handleWifiPage();
     }
-
     else if(currentPage_ == &switchPage)
     {
         handleAirPage();
     }
-
     else if(currentPage_ == &batteryPage)
     {
         handleBatteryPage();
     }
 
-      if(currentPage_ && needRefresh_)
+    if(currentPage_ && needRefresh_)
     {
         currentPage_->draw();
 
@@ -52,11 +49,18 @@ void App::handleMainMenu()
 
         if(g_data.menuIndex >= MENU_COUNT)
             g_data.menuIndex = 0;
+
+        requestRefresh();
     }
 
     if(board_.left_.isPressed())
     {
-        
+        if(g_data.menuIndex > 0)
+            g_data.menuIndex--;
+        else
+            g_data.menuIndex = MENU_COUNT - 1;
+
+        requestRefresh();
     }
 
     if(board_.ok_.isPressed())
@@ -112,6 +116,7 @@ void App::handleWifiPage()
         if(g_data.wifiSelectIndex > 0)
         {
             g_data.wifiSelectIndex--;
+            requestRefresh();
         }
     }
 
@@ -120,6 +125,7 @@ void App::handleWifiPage()
         if(g_data.wifiSelectIndex < g_data.wifiCount - 1)
         {
             g_data.wifiSelectIndex++;
+            requestRefresh();
         }
     }
 
@@ -141,27 +147,39 @@ void App::handleAirPage()
     if(board_.up_.isPressed())
     {
         if(g_data.airSelect > 0)
+        {
             g_data.airSelect--;
+            requestRefresh();
+        }
     }
 
     if(board_.down_.isPressed())
     {
         if(g_data.airSelect < 2)
+        {
             g_data.airSelect++;
+            requestRefresh();
+        }
     }
 
     if(board_.left_.isPressed())
     {
         switch(g_data.airSelect)
         {
-        case 1:     // Temp
+        case 1:
             if(g_data.targetTemp > 16)
+            {
                 g_data.targetTemp--;
+                requestRefresh();
+            }
             break;
 
-        case 2:     // Fan
+        case 2:
             if(g_data.fanSpeed > 0)
+            {
                 g_data.fanSpeed--;
+                requestRefresh();
+            }
             break;
         }
     }
@@ -172,12 +190,18 @@ void App::handleAirPage()
         {
         case 1:
             if(g_data.targetTemp < 30)
+            {
                 g_data.targetTemp++;
+                requestRefresh();
+            }
             break;
 
         case 2:
             if(g_data.fanSpeed < 3)
+            {
                 g_data.fanSpeed++;
+                requestRefresh();
+            }
             break;
         }
     }
@@ -187,6 +211,8 @@ void App::handleAirPage()
         if(g_data.airSelect == 0)
         {
             g_data.airPower = !g_data.airPower;
+
+            requestRefresh();
         }
     }
 
