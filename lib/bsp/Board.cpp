@@ -15,14 +15,6 @@ void Board::init()
     rgb_.off();
     lcd_.init();   // 重点：共享 SPI
 
-    up_.init();
-    down_.init();
-    left_.init();
-    right_.init();
-    ok_.init();
-    key1_.init();
-    key2_.init();
-
     bme_.init(i2c_);
     co2_.init(i2c_);
 

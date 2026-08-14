@@ -234,6 +234,10 @@ void WifiPage::onEnter()
     wifiService.requestScan();
 }
 
+void WifiPage::onExit()
+{
+}
+
 //开关操作
 void SwitchPage::draw()
 {

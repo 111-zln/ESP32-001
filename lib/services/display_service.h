@@ -2,7 +2,7 @@
 
 #include "LCD.h"
 #include "data.h"
-#include "../src/app/tasks.h"
+#include "app/tasks.h"
 
 
 // 页面基类

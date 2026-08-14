@@ -1,7 +1,7 @@
 #include "app.h"
 
 constexpr uint8_t MENU_COUNT = 4;
-App app_;
+App app_(board_);
 
 void App::init()
 {
@@ -220,6 +220,10 @@ void App::handleAirPage()
     {
         switch_Page(&mainmenuPage);
     }
+}
+
+void App::handleBatteryPage()
+{
 }
 
 void App::switch_Page(Page* page)
