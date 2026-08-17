@@ -29,5 +29,11 @@ void setup()
 
 void loop()
 {
+    board_.rgb_.red();
+    delay(1000);
+    board_.rgb_.green();
+    delay(1000);
+    board_.rgb_.off();
     vTaskDelete(nullptr);
+    
 }
