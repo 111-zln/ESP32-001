@@ -25,7 +25,7 @@ void Board::init()
     bool bmeOK = bme_.init(i2c_);
     Serial.println(bmeOK ? "  BME280 OK" : "  BME280 FAIL");
 
-    /* ========== 关键：同步按键初始状态，否则边沿检测永远失效 ========== */
+    /* ========== 关键：同步按键初始状态 ========== */
     Serial.println("  Button init...");
     up_.init();
     down_.init();
@@ -35,7 +35,7 @@ void Board::init()
     key1_.init();
     key2_.init();
     Serial.println("  Button OK");
-    /* ================================================================ */
+    /* =========================================== */
 
     Serial.println("  Board init finished");
 }

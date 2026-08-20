@@ -2,7 +2,7 @@
 
 constexpr uint8_t MENU_COUNT = 4;
 
-/* 不要在这里定义 App app_(board_)，已经移到 main.cpp 了 */
+/* App app_(board_);  ← 已移到 main.cpp，这里删掉 */
 
 void App::init()
 {
@@ -12,6 +12,14 @@ void App::init()
 
 void App::update()
 {
+    /* ========== 崩溃保护 ========== */
+    if (currentPage_ == nullptr)
+    {
+        Serial.println("[APP] currentPage_ is null!");
+        return;
+    }
+    /* ============================== */
+
     if(currentPage_ == &mainmenuPage)
     {
         handleMainMenu();
@@ -33,7 +41,7 @@ void App::update()
         handleBatteryPage();
     }
 
-    if(currentPage_ && needRefresh_)
+    if(needRefresh_)
     {
         currentPage_->draw();
         needRefresh_ = false;
@@ -45,14 +53,23 @@ void App::handleMainMenu()
     if(board_.right_.isPressed())
     {
         g_data.menuIndex++;
-        if(g_data.menuIndex >= MENU_COUNT) g_data.menuIndex = 0;
+        if(g_data.menuIndex >= MENU_COUNT) 
+        {
+            g_data.menuIndex = 0;
+        }
         requestRefresh();
     }
 
     if(board_.left_.isPressed())
     {
-        if(g_data.menuIndex > 0) g_data.menuIndex--;
-        else g_data.menuIndex = MENU_COUNT - 1;
+        if(g_data.menuIndex > 0) 
+        {
+            g_data.menuIndex--;
+        }
+        else 
+        {
+            g_data.menuIndex = MENU_COUNT - 1;
+        }
         requestRefresh();
     }
 
@@ -80,7 +97,7 @@ void App::handleWifiPage()
 {
     if(wifiService.getState() == WifiState::Failed)
     {
-        if(board_.ok_.isPressed())
+        if(board_.key2_.isPressed())
         {
             wifiService.requestRetry();
         }
@@ -109,7 +126,7 @@ void App::handleWifiPage()
         }
     }
 
-    if(board_.ok_.isPressed())
+    if(board_.key2_.isPressed())
     {
         wifiService.requestStartConfig(g_data.wifiSelectIndex);
     }
@@ -182,7 +199,7 @@ void App::handleAirPage()
         }
     }
 
-    if(board_.ok_.isPressed())
+    if(board_.key2_.isPressed())
     {
         if(g_data.airSelect == 0)
         {

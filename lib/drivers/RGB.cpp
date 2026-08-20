@@ -1,7 +1,11 @@
 #include "Rgb.h"
-#include "Gpio.h"
 
 Rgb::Rgb(gpio_num_t r, gpio_num_t g, gpio_num_t b): r_(r), g_(g), b_(b)
+{
+    // 全局构造阶段不做硬件操作
+}
+
+void Rgb::init()
 {
     r_.setOutput();
     g_.setOutput();

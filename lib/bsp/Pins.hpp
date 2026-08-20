@@ -33,8 +33,8 @@ namespace Pin
     constexpr gpio_num_t SW3 = GPIO_NUM_33;
     constexpr gpio_num_t SW5 = GPIO_NUM_2;
 
-    constexpr gpio_num_t SW4_LEFT  = GPIO_NUM_36;
-    constexpr gpio_num_t SW4_RIGHT = GPIO_NUM_39;
+    constexpr gpio_num_t SW4_LEFT  = GPIO_NUM_39;
+    constexpr gpio_num_t SW4_RIGHT = GPIO_NUM_36;
     constexpr gpio_num_t SW4_UP    = GPIO_NUM_34;
     constexpr gpio_num_t SW4_DOWN  = GPIO_NUM_35;
     constexpr gpio_num_t SW4_OK    = GPIO_NUM_32;

@@ -5,17 +5,11 @@
 #include "freertos/timers.h"
 
 static TimerHandle_t sensorTimer = nullptr;
-
 TaskHandle_t sensorTaskHandle = nullptr;
-static TaskHandle_t uiTaskHandle   = nullptr;
-static TaskHandle_t wifiTaskHandle = nullptr;
-
-/* ========== 任务函数（定义在 createTasks 之前） ========== */
 
 static void uiTask(void *pv)
 {
-    while (1)
-    {
+    while (1) {
         app_.update();
         vTaskDelay(pdMS_TO_TICKS(20));
     }
@@ -23,8 +17,7 @@ static void uiTask(void *pv)
 
 static void sensorTask(void *pv)
 {
-    while(1)
-    {
+    while(1) {
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
         sensorService.update();
     }
@@ -32,8 +25,7 @@ static void sensorTask(void *pv)
 
 static void wifiTask(void *pv)
 {
-    while (1)
-    {
+    while (1) {
         wifiService.update();
         vTaskDelay(pdMS_TO_TICKS(10));
     }
@@ -42,19 +34,15 @@ static void wifiTask(void *pv)
 static void sensorTimerCallback(TimerHandle_t timer)
 {
     if(sensorTaskHandle != nullptr)
-    {
         xTaskNotifyGive(sensorTaskHandle);
-    }
 }
-
-/* ========== 任务创建 ========== */
 
 void createTasks()
 {
-    xTaskCreatePinnedToCore(uiTask,     "UI",     4096, nullptr, 2, &uiTaskHandle,   1);
-    xTaskCreatePinnedToCore(sensorTask, "Sensor", 4096, nullptr, 1, &sensorTaskHandle, 0);
-    xTaskCreatePinnedToCore(wifiTask,   "Wifi",   8192, nullptr, 3, &wifiTaskHandle, 0);
+    xTaskCreate(uiTask,     "UI",     8192, NULL, 1, NULL);
+    xTaskCreate(sensorTask, "Sensor", 4096, NULL, 1, &sensorTaskHandle);
+    xTaskCreate(wifiTask,   "Wifi",   8192, NULL, 1, NULL);
 
-    sensorTimer = xTimerCreate("SensorTimer", pdMS_TO_TICKS(1000), pdTRUE, nullptr, sensorTimerCallback);
+    sensorTimer = xTimerCreate("SensorTimer", pdMS_TO_TICKS(1000), pdTRUE, NULL, sensorTimerCallback);
     xTimerStart(sensorTimer, 0);
 }

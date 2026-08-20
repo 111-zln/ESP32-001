@@ -1,28 +1,26 @@
 #include "Button.h"
 #include <Arduino.h>
 
-Button::Button(gpio_num_t pin)
-    : gpio_(pin), lastState_(true)
+Button::Button(gpio_num_t pin): gpio_(pin), pin_(pin), lastState_(true)
 {
-    gpio_.setInput();
-    gpio_pullup_en(pin);
+    // 全局构造阶段不做硬件操作
 }
 
 void Button::init()
 {
-    // 同步初始状态：高电平=未按下
-    lastState_ = (gpio_.read() != 0);
+    pinMode((uint8_t)pin_, INPUT);   // 外接下拉电阻
+    lastState_ = (digitalRead((uint8_t)pin_) == LOW);
 }
 
 bool Button::isPressed()
 {
-    bool current = (gpio_.read() == 0);   // 0 = 按下（上拉）
-    bool pressed = (current && lastState_);
-    lastState_ = !current;                 // true=未按下, false=按下
+    bool currentPressed = (digitalRead((uint8_t)pin_) == HIGH);  // 按下接VCC
+    bool pressed = (currentPressed && lastState_);
+    lastState_ = !currentPressed;
     return pressed;
 }
 
 bool Button::isHeld() const
 {
-    return (gpio_.read() == 0);
+    return (digitalRead((uint8_t)pin_) == HIGH);
 }
