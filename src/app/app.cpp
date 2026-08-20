@@ -73,7 +73,7 @@ void App::handleMainMenu()
         requestRefresh();
     }
 
-    if(board_.ok_.isPressed())
+    if(board_.key1_.isPressed())
     {
         switch(g_data.menuIndex)
         {
@@ -87,7 +87,7 @@ void App::handleMainMenu()
 
 void App::handleSensorPage()
 {
-    if(board_.key1_.isPressed())
+    if(board_.key2_.isPressed())
     {
         switch_Page(&mainmenuPage);
     }
@@ -97,11 +97,11 @@ void App::handleWifiPage()
 {
     if(wifiService.getState() == WifiState::Failed)
     {
-        if(board_.key2_.isPressed())
+        if(board_.key1_.isPressed())
         {
             wifiService.requestRetry();
         }
-        if(board_.key1_.isPressed())
+        if(board_.key2_.isPressed())
         {
             switch_Page(&mainmenuPage);
         }
@@ -113,6 +113,10 @@ void App::handleWifiPage()
         if(g_data.wifiSelectIndex > 0)
         {
             g_data.wifiSelectIndex--;
+            if(g_data.wifiSelectIndex < 0) 
+            {
+                g_data.wifiSelectIndex = 0;
+            }
             requestRefresh();
         }
     }
@@ -122,16 +126,20 @@ void App::handleWifiPage()
         if(g_data.wifiSelectIndex < g_data.wifiCount - 1)
         {
             g_data.wifiSelectIndex++;
+            if(g_data.wifiSelectIndex >= g_data.wifiCount) 
+            {
+                g_data.wifiSelectIndex = 0;
+            }
             requestRefresh();
         }
     }
 
-    if(board_.key2_.isPressed())
+    if(board_.key1_.isPressed())
     {
         wifiService.requestStartConfig(g_data.wifiSelectIndex);
     }
 
-    if(board_.key1_.isPressed())
+    if(board_.key2_.isPressed())
     {
         switch_Page(&mainmenuPage);
     }
@@ -199,7 +207,7 @@ void App::handleAirPage()
         }
     }
 
-    if(board_.key2_.isPressed())
+    if(board_.key1_.isPressed())
     {
         if(g_data.airSelect == 0)
         {
@@ -208,7 +216,7 @@ void App::handleAirPage()
         }
     }
 
-    if(board_.key1_.isPressed())
+    if(board_.key2_.isPressed())
     {
         switch_Page(&mainmenuPage);
     }
@@ -216,7 +224,7 @@ void App::handleAirPage()
 
 void App::handleBatteryPage()
 {
-    if(board_.key1_.isPressed())
+    if(board_.key2_.isPressed())
     {
         switch_Page(&mainmenuPage);
     }

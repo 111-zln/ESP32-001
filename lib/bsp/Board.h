@@ -36,7 +36,7 @@ class Board
         Button left_;
         Button right_;
         Button ok_;
-        Button key1_;
-        Button key2_;
+        Button key1_; //enter
+        Button key2_; //exit
 };
 extern Board board_;

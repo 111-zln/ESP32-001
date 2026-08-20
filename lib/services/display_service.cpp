@@ -247,32 +247,31 @@ void SwitchPage::draw()
     char buf[24];
 
     // 标题
-    u8g2_.drawStr(28, 8, "AIR CONTROL");
+    u8g2_.drawStr(28, 4, "AIR CONTROL");
     u8g2_.drawHLine(0, 11, 128);
 
     // 光标
     switch (g_data.airSelect)
     {
     case 0:
-        u8g2_.drawStr(0, 24, ">");
+        u8g2_.drawStr(4, 18, ">");
         break;
     case 1:
-        u8g2_.drawStr(0, 36, ">");
+        u8g2_.drawStr(4, 28, ">");
         break;
     case 2:
-        u8g2_.drawStr(0, 48, ">");
+        u8g2_.drawStr(4, 38, ">");
         break;
     }
 
     // Power
-    sprintf(buf, " Power : %s",
-            g_data.airPower ? "ON" : "OFF");
-    u8g2_.drawStr(4, 24, buf);
+    sprintf(buf, " Power : %s",g_data.airPower ? "ON" : "OFF");
+    u8g2_.drawStr(8, 18, buf);
 
     // Temp
     sprintf(buf, " Temp  : %d C",
             g_data.targetTemp);
-    u8g2_.drawStr(4, 36, buf);
+    u8g2_.drawStr(8, 28, buf);
 
     // Fan
     const char *fanStr[] =
@@ -283,14 +282,13 @@ void SwitchPage::draw()
         "AUTO"
     };
 
-    sprintf(buf, " Fan   : %s",
-            fanStr[g_data.fanSpeed]);
+    sprintf(buf, " Fan   : %s",fanStr[g_data.fanSpeed]);
 
-    u8g2_.drawStr(4, 48, buf);
+    u8g2_.drawStr(8, 38, buf);
 
     // 底部提示
-    u8g2_.drawHLine(0, 54, 128);
-    u8g2_.drawStr(4, 62, "KEY1:Back");
+    //u8g2_.drawHLine(0, 54, 128);
+    u8g2_.drawStr(8, 50, "KEY2:Back");
 
     u8g2_.sendBuffer();
 }
