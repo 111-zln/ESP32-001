@@ -10,12 +10,12 @@ struct Calibration
     int16_t   dig_T3;
 
     //湿度补偿参数
-    uint8_t    dig_H1;
-    int16_t    dig_H2;
-    uint16_t   dig_H3;
-    uint8_t    dig_H4;
-    int16_t    dig_H5;
-    int8_t     dig_H6;
+    uint8_t  dig_H1;
+    int16_t  dig_H2;
+    uint8_t  dig_H3;
+    int16_t  dig_H4;
+    int16_t  dig_H5;
+    int8_t   dig_H6;
 
     //压力补偿参数
     uint16_t  dig_P1;

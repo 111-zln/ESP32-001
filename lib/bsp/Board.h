@@ -29,7 +29,7 @@ class Board
         Rgb rgb_;
         Lcd lcd_;
         Bme280 bme_;
-        Co2 co2_;
+        //Co2 co2_;
 
         Button up_;
         Button down_;

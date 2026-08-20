@@ -7,7 +7,7 @@ namespace Pin
     // SPI
     constexpr gpio_num_t SPI_SCLK = GPIO_NUM_18;
     constexpr gpio_num_t SPI_MOSI = GPIO_NUM_23;
-    constexpr int SPI_MISO = -1;
+    constexpr int SPI_MISO =  -1;
  
     // LCD
     constexpr gpio_num_t LCD_CS  = GPIO_NUM_5;
@@ -31,10 +31,10 @@ namespace Pin
 
     // 按键
     constexpr gpio_num_t SW3 = GPIO_NUM_33;
-    constexpr gpio_num_t SW5 = GPIO_NUM_25;
+    constexpr gpio_num_t SW5 = GPIO_NUM_2;
 
     constexpr gpio_num_t SW4_LEFT  = GPIO_NUM_36;
-    constexpr gpio_num_t SW4_RIGHT = GPIO_NUM_2;
+    constexpr gpio_num_t SW4_RIGHT = GPIO_NUM_39;
     constexpr gpio_num_t SW4_UP    = GPIO_NUM_34;
     constexpr gpio_num_t SW4_DOWN  = GPIO_NUM_35;
     constexpr gpio_num_t SW4_OK    = GPIO_NUM_32;

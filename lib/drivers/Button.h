@@ -1,21 +1,16 @@
 #pragma once 
-
 #include "driver/gpio.h"
 #include "Gpio.h"
 
 class Button
 {
-    
-    public:
+public:
+    explicit Button(gpio_num_t pin);
+    void init();
+    bool isPressed();      // 边沿检测，按一次只返回一次 true
+    bool isHeld() const;   // 当前是否正按着
 
-        explicit Button(gpio_num_t pin);
-
-        void init();     //设为输出模式
-
-        bool isPressed() const;  //检测是否按压 
-
-
-
-    private:
-        Gpio gpio_; //创建一个属于自己的对象，但是这个对象要使用外部传入的pin，所以要在构造函数中传入一个pin
+private:
+    Gpio gpio_;
+    bool lastState_;       // true=未按下(高电平)
 };

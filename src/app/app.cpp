@@ -1,12 +1,12 @@
 #include "app.h"
 
 constexpr uint8_t MENU_COUNT = 4;
-App app_(board_);
+
+/* 不要在这里定义 App app_(board_)，已经移到 main.cpp 了 */
 
 void App::init()
 {
     currentPage_ = &mainmenuPage;
-
     requestRefresh();
 }
 
@@ -36,7 +36,6 @@ void App::update()
     if(currentPage_ && needRefresh_)
     {
         currentPage_->draw();
-
         needRefresh_ = false;
     }
 }
@@ -46,20 +45,14 @@ void App::handleMainMenu()
     if(board_.right_.isPressed())
     {
         g_data.menuIndex++;
-
-        if(g_data.menuIndex >= MENU_COUNT)
-            g_data.menuIndex = 0;
-
+        if(g_data.menuIndex >= MENU_COUNT) g_data.menuIndex = 0;
         requestRefresh();
     }
 
     if(board_.left_.isPressed())
     {
-        if(g_data.menuIndex > 0)
-            g_data.menuIndex--;
-        else
-            g_data.menuIndex = MENU_COUNT - 1;
-
+        if(g_data.menuIndex > 0) g_data.menuIndex--;
+        else g_data.menuIndex = MENU_COUNT - 1;
         requestRefresh();
     }
 
@@ -67,21 +60,10 @@ void App::handleMainMenu()
     {
         switch(g_data.menuIndex)
         {
-        case 0:
-            switch_Page(&wifiPage);
-            break;
-
-        case 1:
-            switch_Page(&tempPage);
-            break;
-
-        case 2:
-            switch_Page(&batteryPage);
-            break;
-
-        case 3:
-            switch_Page(&switchPage);
-            break;
+        case 0: switch_Page(&wifiPage);     break;
+        case 1: switch_Page(&tempPage);     break;
+        case 2: switch_Page(&batteryPage);  break;
+        case 3: switch_Page(&switchPage);   break;
         }
     }
 }
@@ -102,13 +84,11 @@ void App::handleWifiPage()
         {
             wifiService.requestRetry();
         }
-
         if(board_.key1_.isPressed())
         {
             switch_Page(&mainmenuPage);
         }
-
-    return;
+        return;
     }
 
     if(board_.up_.isPressed())
@@ -138,8 +118,6 @@ void App::handleWifiPage()
     {
         switch_Page(&mainmenuPage);
     }
-
-
 }
 
 void App::handleAirPage()
@@ -173,7 +151,6 @@ void App::handleAirPage()
                 requestRefresh();
             }
             break;
-
         case 2:
             if(g_data.fanSpeed > 0)
             {
@@ -195,7 +172,6 @@ void App::handleAirPage()
                 requestRefresh();
             }
             break;
-
         case 2:
             if(g_data.fanSpeed < 3)
             {
@@ -211,7 +187,6 @@ void App::handleAirPage()
         if(g_data.airSelect == 0)
         {
             g_data.airPower = !g_data.airPower;
-
             requestRefresh();
         }
     }
@@ -224,24 +199,23 @@ void App::handleAirPage()
 
 void App::handleBatteryPage()
 {
+    if(board_.key1_.isPressed())
+    {
+        switch_Page(&mainmenuPage);
+    }
 }
 
 void App::switch_Page(Page* page)
 {
-    if(page == nullptr)
-        return;
+    if(page == nullptr) return;
 
-        
     if(currentPage_)
     {
         currentPage_->onExit();
     }
 
     currentPage_ = page;
-
     currentPage_->onEnter();
-
-
     requestRefresh();
 }
 

@@ -31,6 +31,13 @@ void Rgb::blue()
 
 void Rgb::off()
 {
+    r_.write(0);
+    g_.write(0);
+    b_.write(0);
+}
+
+void Rgb::on()
+{
     r_.write(1);
     g_.write(1);
     b_.write(1);

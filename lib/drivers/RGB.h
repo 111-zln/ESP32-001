@@ -16,6 +16,8 @@ class Rgb
         void blue();
 
         void off();
+        
+        void on();
     private:
         Gpio r_;
         Gpio g_;
